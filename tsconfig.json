@@ -6,6 +6,6 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "types": ["reflect-metadata"],
-    "lib": ["esnext","dom"]
+    "lib": ["esnext", "dom"]
   }
 }
