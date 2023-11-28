@@ -1,7 +1,7 @@
 import 'reflect-metadata';
 import { Container } from 'inversify';
 
-import { CharacterSheetsStore } from './character-sheets-store';
+import { CharacterSheetsStore } from './CharacterSheetsStore';
 import { NewCharacterSheet } from '../domain.types';
 
 import {
