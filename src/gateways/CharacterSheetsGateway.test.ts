@@ -7,14 +7,14 @@ import {
   resetFactoryDefaults,
 } from '~config/factoryDefaults';
 import { Injectables } from '~config/ioc/injectables';
-import { AppTestHarness } from '~testHelpers/AppTestHarness';
+import { AppTestHelper } from '~testHelpers/AppTestHelper';
 
 describe('CharacterSheetsGateway', () => {
-  let appTestHarness: AppTestHarness;
+  let appTestHarness: AppTestHelper;
   let setItemSpy: jest.SpyInstance;
 
   const getBeforeEach = () => async () => {
-    appTestHarness = new AppTestHarness();
+    appTestHarness = new AppTestHelper();
     appTestHarness.init();
     setItemSpy = jest.spyOn(appTestHarness.asyncStorageFake, 'setItem');
 
@@ -103,7 +103,7 @@ describe('CharacterSheetsGateway', () => {
       },
     ];
     getAfterEach()();
-    appTestHarness = new AppTestHarness();
+    appTestHarness = new AppTestHelper();
     appTestHarness.init();
     appTestHarness.asyncStorageFake.getItem = jest
       .fn()
