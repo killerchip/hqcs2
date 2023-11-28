@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { CharacterSheetDto, NewCharacterSheetDto } from './dto.types';
 import { config } from '../config/config';
 import {

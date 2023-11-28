@@ -14,6 +14,13 @@ export type AsyncStorage = {
   getItem: (key: string) => Promise<string | null>;
 };
 
+export type ICharSheetsGateway = {
+  loadInitialData: () => Promise<CharacterSheetDto[] | undefined>;
+  setList: (charSheets: CharacterSheetDto[]) => void;
+  setItem: (charSheet: NewCharacterSheetDto | CharacterSheetDto) => void;
+  deleteItem: (id: string) => void;
+};
+
 @injectable()
 export class CharSheetsGateway {
   @inject(Injectables.AsyncStorage) private localStorage!: AsyncStorage;

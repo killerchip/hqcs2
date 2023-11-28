@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 import { getAsyncStorageFake } from './AsyncStorageFake';
 import { BaseIOC } from '../config/ioc/BaseIOC';
 import { Injectables } from '../config/ioc/injectables';
