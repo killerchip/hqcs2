@@ -2,17 +2,18 @@ import 'reflect-metadata';
 import { Container } from 'inversify';
 
 import { CharacterSheetsStore } from './character-sheets-store';
+import { NewCharacterSheet } from '../domain.types';
+
 import {
   getFactoryDefaultCharacterSheets,
   resetFactoryDefaults,
-} from '../../config/factoryDefaults';
-import { BaseIOC } from '../../config/ioc/BaseIOC';
+} from '~config/factoryDefaults';
+import { BaseIOC } from '~config/ioc/BaseIOC';
 import {
   CharSheetsGateway,
   ICharSheetsGateway,
-} from '../../gateways/CharacterSheetsGateway';
-import { getFakeUuid } from '../../testHelpers/fakeUuid';
-import { NewCharacterSheet } from '../domain.types';
+} from '~gateways/CharacterSheetsGateway';
+import { getFakeUuid } from '~testHelpers/fakeUuid';
 
 // This is a typical example for unit test of a store.
 describe('CharacterSheetsStore', () => {

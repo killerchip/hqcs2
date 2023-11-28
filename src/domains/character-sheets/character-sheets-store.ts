@@ -2,14 +2,15 @@ import { inject, injectable } from 'inversify';
 import { action, makeObservable, runInAction } from 'mobx';
 
 import {
-  CharSheetsGateway,
-  ICharSheetsGateway,
-} from '../../gateways/CharacterSheetsGateway';
-import {
   CharacterSheet,
   isNewCharSheet,
   NewCharacterSheet,
 } from '../domain.types';
+
+import {
+  CharSheetsGateway,
+  ICharSheetsGateway,
+} from '~gateways/CharacterSheetsGateway';
 
 @injectable()
 export class CharacterSheetsStore {

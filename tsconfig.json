@@ -6,6 +6,15 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "types": ["reflect-metadata","jest"],
-    "lib": ["esnext", "dom"]
+    "lib": ["esnext", "dom"],
+    "baseUrl": ".",
+    "paths": {
+      "~app/*": ["./app/*"],
+      "~assets/*": ["./assets/*"],
+      "~config/*": ["./src/config/*"],
+      "~domains/*": ["./src/domains/*"],
+      "~gateways/*": ["./src/gateways/*"],
+      "~testHelpers/*": ["./src/testHelpers/*"],
+    }
   }
 }

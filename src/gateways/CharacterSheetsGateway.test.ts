@@ -1,12 +1,13 @@
 import 'reflect-metadata';
 import { CharacterSheetDto, NewCharacterSheetDto } from './dto.types';
-import { config } from '../config/config';
+
+import { config } from '~config/config';
 import {
   getFactoryDefaultCharacterSheets,
   resetFactoryDefaults,
-} from '../config/factoryDefaults';
-import { Injectables } from '../config/ioc/injectables';
-import { AppTestHarness } from '../testHelpers/AppTestHarness';
+} from '~config/factoryDefaults';
+import { Injectables } from '~config/ioc/injectables';
+import { AppTestHarness } from '~testHelpers/AppTestHarness';
 
 describe('CharacterSheetsGateway', () => {
   let appTestHarness: AppTestHarness;

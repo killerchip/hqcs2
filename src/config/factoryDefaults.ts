@@ -1,4 +1,4 @@
-import { CharacterSheetDto } from '../gateways/dto.types';
+import { CharacterSheetDto } from '~gateways/dto.types';
 
 let defaults: CharacterSheetDto[] | null = null;
 

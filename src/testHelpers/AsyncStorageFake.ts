@@ -1,4 +1,4 @@
-import { AsyncStorage } from '../gateways/CharacterSheetsGateway';
+import { AsyncStorage } from '~gateways/CharacterSheetsGateway';
 
 export class AsyncStorageFake implements AsyncStorage {
   setItem = async (key: string, value: string) => {};

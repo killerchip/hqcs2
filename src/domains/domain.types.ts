@@ -1,4 +1,4 @@
-import { CharacterSheetDto, NewCharacterSheetDto } from '../gateways/dto.types';
+import { CharacterSheetDto, NewCharacterSheetDto } from '~gateways/dto.types';
 
 export type CharacterSheet = CharacterSheetDto;
 export type NewCharacterSheet = Omit<CharacterSheet, 'id'>;

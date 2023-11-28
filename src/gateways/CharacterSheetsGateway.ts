@@ -5,9 +5,10 @@ import {
   isNewCharSheetDto,
   NewCharacterSheetDto,
 } from './dto.types';
-import { config } from '../config/config';
-import { getFactoryDefaultCharacterSheets } from '../config/factoryDefaults';
-import { Injectables } from '../config/ioc/injectables';
+
+import { config } from '~config/config';
+import { getFactoryDefaultCharacterSheets } from '~config/factoryDefaults';
+import { Injectables } from '~config/ioc/injectables';
 
 export type AsyncStorage = {
   setItem: (key: string, value: string) => Promise<void>;

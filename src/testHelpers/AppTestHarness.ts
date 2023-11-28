@@ -1,8 +1,9 @@
 import { getAsyncStorageFake } from './AsyncStorageFake';
 import { getFakeUuid } from './fakeUuid';
-import { BaseIOC } from '../config/ioc/BaseIOC';
-import { Injectables } from '../config/ioc/injectables';
-import { CharSheetsGateway } from '../gateways/CharacterSheetsGateway';
+
+import { BaseIOC } from '~config/ioc/BaseIOC';
+import { Injectables } from '~config/ioc/injectables';
+import { CharSheetsGateway } from '~gateways/CharacterSheetsGateway';
 
 export class AppTestHarness {
   container = new BaseIOC().buildBaseTemplate();
