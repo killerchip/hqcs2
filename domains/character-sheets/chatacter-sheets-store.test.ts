@@ -11,10 +11,10 @@ import {
   CharSheetsGateway,
   ICharSheetsGateway,
 } from '../../gateways/CharacterSheetsGateway';
-import { NewCharacterSheetDto } from '../../gateways/dto.types';
 import { getFakeUuid } from '../../testHelpers/fakeUuid';
 import { NewCharacterSheet } from '../domain.types';
 
+// This is a typical example for unit test of a store.
 describe('CharacterSheetsStore', () => {
   let container: Container | null = null;
   let mockCharSheetsGateway: ICharSheetsGateway | null = null;
@@ -23,7 +23,6 @@ describe('CharacterSheetsStore', () => {
     typeof getFactoryDefaultCharacterSheets
   >;
 
-  // TODO: can these be refactored and move to their own 'harness'?
   beforeEach(async () => {
     container = new BaseIOC().container;
     mockCharSheetsGateway = {
