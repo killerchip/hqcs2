@@ -1,4 +1,6 @@
 import 'reflect-metadata';
+import { Container } from 'inversify';
+
 import { CharacterSheetDto, NewCharacterSheetDto } from './dto.types';
 
 import { config } from '~config/config';
@@ -6,23 +8,39 @@ import {
   getFactoryDefaultCharacterSheets,
   resetFactoryDefaults,
 } from '~config/factoryDefaults';
+import { BaseIOC } from '~config/ioc/BaseIOC';
 import { Injectables } from '~config/ioc/injectables';
-import { AppTestHelper } from '~testHelpers/AppTestHelper';
+import {
+  AsyncStorage,
+  CharSheetsGateway,
+} from '~gateways/CharacterSheetsGateway';
+import { getFakeUuid } from '~testHelpers/fakeUuid';
 
 describe('CharacterSheetsGateway', () => {
-  let appTestHarness: AppTestHelper;
-  let setItemSpy: jest.SpyInstance;
+  let container: Container | null = null;
+  let fakeAsyncStorage: AsyncStorage | null = null;
+
+  let charSheetsGateway: CharSheetsGateway | null = null;
+  let factoryDefaultsSheets: ReturnType<
+    typeof getFactoryDefaultCharacterSheets
+  >;
 
   const getBeforeEach = () => async () => {
-    appTestHarness = new AppTestHelper();
-    appTestHarness.init();
-    setItemSpy = jest.spyOn(appTestHarness.asyncStorageFake, 'setItem');
-
-    await appTestHarness.charSheetsGateway?.loadInitialData();
+    container = new BaseIOC().buildWithMockDependencies();
+    fakeAsyncStorage = {
+      getItem: jest.fn(),
+      setItem: jest.fn(),
+    };
+    container?.unbind(Injectables.AsyncStorage);
+    container
+      .bind<AsyncStorage>(Injectables.AsyncStorage)
+      .toConstantValue(fakeAsyncStorage);
+    charSheetsGateway = container.get(CharSheetsGateway);
+    factoryDefaultsSheets = getFactoryDefaultCharacterSheets(getFakeUuid);
+    await charSheetsGateway?.loadInitialData();
   };
 
   const getAfterEach = () => () => {
-    setItemSpy.mockReset();
     resetFactoryDefaults();
   };
 
@@ -31,24 +49,18 @@ describe('CharacterSheetsGateway', () => {
   afterEach(getAfterEach());
 
   it('on clean init stores a set of mock data', () => {
-    expect(appTestHarness.charSheetsGateway?.charSheets).toStrictEqual(
-      getFactoryDefaultCharacterSheets(
-        appTestHarness.container.get(Injectables.GetUuid),
-      ),
-    );
+    expect(charSheetsGateway?.charSheets).toStrictEqual(factoryDefaultsSheets);
   });
 
   it('updates character sheet and saves the whole list', () => {
-    const charSheet = appTestHarness.charSheetsGateway?.charSheets[0];
+    const charSheet = charSheetsGateway!.charSheets[0];
     const newCharSheet = { ...charSheet, name: 'new name' };
-    appTestHarness.charSheetsGateway?.setItem(
-      newCharSheet as CharacterSheetDto,
-    );
+    charSheetsGateway!.setItem(newCharSheet as CharacterSheetDto);
 
-    expect(appTestHarness.charSheetsGateway?.charSheets[0]).toBe(newCharSheet);
-    expect(appTestHarness.asyncStorageFake.setItem).toHaveBeenCalledWith(
+    expect(charSheetsGateway!.charSheets[0]).toBe(newCharSheet);
+    expect(fakeAsyncStorage!.setItem).toHaveBeenCalledWith(
       config.storageKey + '_charSheets',
-      JSON.stringify(appTestHarness.charSheetsGateway?.charSheets),
+      JSON.stringify(charSheetsGateway!.charSheets),
     );
   });
 
@@ -63,29 +75,27 @@ describe('CharacterSheetsGateway', () => {
       mindPoints: 5,
     };
 
-    await appTestHarness.charSheetsGateway?.setItem(newCharSheet);
+    await charSheetsGateway?.setItem(newCharSheet);
 
-    const createdCharSheet = appTestHarness.charSheetsGateway?.charSheets[2];
+    const createdCharSheet = charSheetsGateway?.charSheets[2];
     const createdCharSheetId = createdCharSheet?.id;
 
     expect(createdCharSheetId).toBeDefined();
-    expect(appTestHarness.charSheetsGateway?.charSheets[2]).toBe(
-      createdCharSheet,
-    );
-    expect(appTestHarness.asyncStorageFake.setItem).toHaveBeenCalledWith(
+    expect(charSheetsGateway!.charSheets[2]).toBe(createdCharSheet);
+    expect(fakeAsyncStorage!.setItem).toHaveBeenCalledWith(
       config.storageKey + '_charSheets',
-      JSON.stringify(appTestHarness.charSheetsGateway?.charSheets),
+      JSON.stringify(charSheetsGateway!.charSheets),
     );
   });
 
   it('allows deleting a character sheet', async () => {
-    const firstCharSheetId = appTestHarness.charSheetsGateway!.charSheets[0].id;
-    appTestHarness.charSheetsGateway?.deleteItem(firstCharSheetId);
+    const firstCharSheetId = charSheetsGateway!.charSheets[0].id;
+    await charSheetsGateway!.deleteItem(firstCharSheetId);
 
-    expect(appTestHarness.charSheetsGateway?.charSheets.length).toBe(1);
-    expect(appTestHarness.asyncStorageFake.setItem).toHaveBeenCalledWith(
+    expect(charSheetsGateway!.charSheets.length).toBe(1);
+    expect(fakeAsyncStorage!.setItem).toHaveBeenCalledWith(
       config.storageKey + '_charSheets',
-      JSON.stringify([appTestHarness.charSheetsGateway?.charSheets[0]]),
+      JSON.stringify([charSheetsGateway!.charSheets[0]]),
     );
   });
 
@@ -102,18 +112,13 @@ describe('CharacterSheetsGateway', () => {
         mindPoints: 5,
       },
     ];
-    getAfterEach()();
-    appTestHarness = new AppTestHelper();
-    appTestHarness.init();
-    appTestHarness.asyncStorageFake.getItem = jest
+    fakeAsyncStorage!.getItem = jest
       .fn()
       .mockReturnValueOnce(
         new Promise<string>((resolve) => resolve(JSON.stringify(dbCharSheets))),
       );
-    await appTestHarness.charSheetsGateway?.loadInitialData();
+    await charSheetsGateway!.loadInitialData();
 
-    expect(appTestHarness.charSheetsGateway?.charSheets).toStrictEqual(
-      dbCharSheets,
-    );
+    expect(charSheetsGateway!.charSheets).toStrictEqual(dbCharSheets);
   });
 });

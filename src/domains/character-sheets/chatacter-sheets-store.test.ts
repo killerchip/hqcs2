@@ -46,6 +46,7 @@ describe('CharacterSheetsStore', () => {
   });
 
   afterEach(() => {
+    // TODO: Do I need to clean this mock?
     (mockCharSheetsGateway?.loadInitialData as jest.Mock).mockClear();
     resetFactoryDefaults();
   });
