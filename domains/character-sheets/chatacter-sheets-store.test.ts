@@ -100,4 +100,10 @@ describe('CharacterSheetsStore', () => {
     );
     expect(deletedItem).toBeUndefined();
   });
+
+  it('throws an error if item to update is not found', async () => {
+    const newItem = { ...charSheetsStore!.list[1], name: 'Gimli' };
+    newItem.id = getFakeUuid();
+    await expect(charSheetsStore!.updateItem(newItem)).rejects.toThrow();
+  });
 });

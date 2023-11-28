@@ -44,8 +44,7 @@ export class CharacterSheetsStore {
     );
 
     if (itemIndex === -1) {
-      // TODO: throw error and handle it
-      return;
+      throw new Error('Character sheet for update not found');
     }
 
     this.list[itemIndex] = await this.charSheetsGateway.setItem(sheet);
