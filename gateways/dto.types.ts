@@ -10,7 +10,7 @@ export type NewCharacterSheetDto = {
 
 export type CharacterSheetDto = NewCharacterSheetDto & { id: string };
 
-export function isNewCharSheet(
+export function isNewCharSheetDto(
   charSheet: NewCharacterSheetDto | CharacterSheetDto,
 ): charSheet is NewCharacterSheetDto {
   return (charSheet as CharacterSheetDto).id === undefined;

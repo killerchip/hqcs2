@@ -1,4 +1,5 @@
 import { getAsyncStorageFake } from './AsyncStorageFake';
+import { getFakeUuid } from './fakeUuid';
 import { BaseIOC } from '../config/ioc/BaseIOC';
 import { Injectables } from '../config/ioc/injectables';
 import { CharSheetsGateway } from '../gateways/CharacterSheetsGateway';
@@ -16,7 +17,7 @@ export class AppTestHarness {
 
     this.container
       .bind(Injectables.GetUuid)
-      .toConstantValue(() => (Math.random() * 10000000).toFixed(0));
+      .toConstantValue(() => getFakeUuid());
 
     this.charSheetsGateway = this.container.get(CharSheetsGateway);
   }
