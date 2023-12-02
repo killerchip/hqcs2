@@ -8,7 +8,7 @@ import {
   getFactoryDefaultCharacterSheets,
   resetFactoryDefaults,
 } from '~config/factoryDefaults';
-import { BaseIOC } from '~config/ioc/BaseIOC';
+import { getTestIOC } from '~config/ioc/TestIOC';
 import { Injectables } from '~config/ioc/injectables';
 import {
   AsyncStorage,
@@ -34,7 +34,7 @@ describe('CharacterSheetsGateway', () => {
 
   beforeEach(async () => {
     // We build a container with default mock dependencies
-    container = new BaseIOC().buildWithMockDependencies();
+    container = getTestIOC();
 
     // We create our test suite special mocks/spies here
     fakeAsyncStorage = {

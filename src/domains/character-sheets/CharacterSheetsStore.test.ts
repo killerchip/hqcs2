@@ -8,7 +8,7 @@ import {
   getFactoryDefaultCharacterSheets,
   resetFactoryDefaults,
 } from '~config/factoryDefaults';
-import { BaseIOC } from '~config/ioc/BaseIOC';
+import { getTestIOC } from '~config/ioc/TestIOC';
 import {
   CharSheetsGateway,
   ICharSheetsGateway,
@@ -31,7 +31,7 @@ describe('CharacterSheetsStore', () => {
 
   beforeEach(async () => {
     // Setup base container
-    container = new BaseIOC().buildWithMockDependencies();
+    container = getTestIOC();
 
     // Create mocks/spies dependencies
     mockCharSheetsGateway = {
