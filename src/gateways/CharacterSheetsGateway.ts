@@ -55,7 +55,7 @@ export class CharSheetsGateway implements ICharSheetsGateway {
       return null;
     }
 
-    return JSON.parse(json);
+    return JSON.parse(json).list;
   };
 
   setItem = async (
@@ -92,7 +92,7 @@ export class CharSheetsGateway implements ICharSheetsGateway {
   };
 
   private save = async () => {
-    const json = JSON.stringify(this.charSheets);
+    const json = JSON.stringify({ list: this.charSheets });
     await this.localStorage.setItem(`${config.storageKey}_charSheets`, json);
   };
 }
