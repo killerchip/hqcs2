@@ -1,25 +1,28 @@
-import { getAsyncStorageFake } from './FakeAsyncStorage';
-import { getFakeUuid } from './fakeUuid';
+import { MockAsyncStorage } from './MockAsyncStorage';
+import { getMockUuid } from './mockUuid';
 
-import { BaseIOC } from '~config/ioc/BaseIOC';
+import {
+  getFactoryDefaultCharacterSheets,
+  resetFactoryDefaults,
+} from '~config/factoryDefaults';
+import { getTestIOC } from '~config/ioc/TestIOC';
 import { Injectables } from '~config/ioc/injectables';
+import { CharacterSheetsListScreenPresenter } from '~domains/character-sheets/CharacterSheetsListScreen/CharacterSheetsListScreenPresenter';
 import { CharSheetsGateway } from '~gateways/CharacterSheetsGateway';
 
 export class AppTestHelper {
-  container = new BaseIOC().buildBaseTemplate();
-  charSheetsGateway: CharSheetsGateway | null = null;
-  asyncStorageFake = getAsyncStorageFake();
+  container = getTestIOC();
+  charSheetsGateway: CharSheetsGateway = this.container.get(CharSheetsGateway);
+  mockAsyncStorage = this.container.get<MockAsyncStorage>(
+    Injectables.AsyncStorage,
+  );
+  factoryDefaultsSheets = getFactoryDefaultCharacterSheets(getMockUuid);
+  // noinspection JSUnusedGlobalSymbols
+  characterSheetsListScreenPresenter = this.container.get(
+    CharacterSheetsListScreenPresenter,
+  );
 
-  // 1. set up the app
-  init() {
-    this.container
-      .bind(Injectables.AsyncStorage)
-      .toConstantValue(this.asyncStorageFake);
-
-    this.container
-      .bind(Injectables.GetUuid)
-      .toConstantValue(() => getFakeUuid());
-
-    this.charSheetsGateway = this.container.get(CharSheetsGateway);
+  reset() {
+    resetFactoryDefaults();
   }
 }

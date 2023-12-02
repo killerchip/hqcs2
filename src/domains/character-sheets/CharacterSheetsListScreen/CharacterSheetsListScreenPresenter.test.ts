@@ -2,75 +2,76 @@ import 'reflect-metadata';
 import { Container } from 'inversify';
 import { when } from 'mobx';
 
-import {
-  getFactoryDefaultCharacterSheets,
-  resetFactoryDefaults,
-} from '~config/factoryDefaults';
-import { getTestIOC } from '~config/ioc/TestIOC';
-import { Injectables } from '~config/ioc/injectables';
 import { CharacterSheetsListScreenPresenter } from '~domains/character-sheets/CharacterSheetsListScreen/CharacterSheetsListScreenPresenter';
 import { CharacterSheet } from '~domains/domain.types';
-import { FakeAsyncStorage } from '~testHelpers/FakeAsyncStorage';
-import { getFakeUuid } from '~testHelpers/fakeUuid';
+import { AppTestHelper } from '~testHelpers/AppTestHelper';
+import { MockAsyncStorage } from '~testHelpers/MockAsyncStorage';
 
+// Typical black box test of a screen presenter
 describe('CharacterSheetsListScreenPresenter', () => {
+  let appTestHelper: AppTestHelper;
   let container: Container;
-  let presenter: CharacterSheetsListScreenPresenter;
-  let fakeAsyncStorage: FakeAsyncStorage;
+  let characterSheetsListScreenPresenter: CharacterSheetsListScreenPresenter;
+  let mockAsyncStorage: MockAsyncStorage;
   let defaultCharacterSheets: CharacterSheet[];
 
   beforeEach(() => {
-    container = getTestIOC();
-    // Setup mock AsyncStorage and spy on it
-    fakeAsyncStorage = container.get(Injectables.AsyncStorage);
-    defaultCharacterSheets = getFactoryDefaultCharacterSheets(getFakeUuid);
-    fakeAsyncStorage.getItem = jest
+    appTestHelper = new AppTestHelper();
+    ({
+      container,
+      factoryDefaultsSheets: defaultCharacterSheets,
+      mockAsyncStorage,
+      characterSheetsListScreenPresenter,
+    } = appTestHelper);
+
+    // Setup mock AsyncStorage specific to this suite
+    mockAsyncStorage.getItem = jest
       .fn()
       .mockReturnValueOnce(
         Promise.resolve(JSON.stringify({ list: defaultCharacterSheets })),
       );
-
-    presenter = container.get<CharacterSheetsListScreenPresenter>(
-      CharacterSheetsListScreenPresenter,
-    );
   });
 
   afterEach(() => {
     // Cleanup after each test
-    resetFactoryDefaults();
+    appTestHelper.reset();
   });
 
   it('should be injectable as transient', () => {
     const presenter2 = container.get(CharacterSheetsListScreenPresenter);
-    expect(presenter).not.toBe(presenter2);
+    expect(characterSheetsListScreenPresenter).not.toBe(presenter2);
   });
 
   it('should allow for initial loading of data', async () => {
-    await presenter.load();
-    expect(fakeAsyncStorage.getItem).toHaveBeenCalled();
+    await characterSheetsListScreenPresenter.load();
+    expect(mockAsyncStorage.getItem).toHaveBeenCalled();
   });
 
   it('should serve viewModel of the list', async () => {
-    await presenter.load();
-    expect(presenter.viewModel).toStrictEqual(defaultCharacterSheets);
+    await characterSheetsListScreenPresenter.load();
+    expect(characterSheetsListScreenPresenter.viewModel).toStrictEqual(
+      defaultCharacterSheets,
+    );
   });
 
   it('should indicate when list is loading', async () => {
-    expect(presenter.loading).toBe(false);
-    presenter.load().then();
-    expect(presenter.loading).toBe(true);
-    await when(() => !presenter.loading);
-    expect(presenter.viewModel).toStrictEqual(defaultCharacterSheets);
+    expect(characterSheetsListScreenPresenter.loading).toBe(false);
+    characterSheetsListScreenPresenter.load().then();
+    expect(characterSheetsListScreenPresenter.loading).toBe(true);
+    await when(() => !characterSheetsListScreenPresenter.loading);
+    expect(characterSheetsListScreenPresenter.viewModel).toStrictEqual(
+      defaultCharacterSheets,
+    );
   });
 
   it('handle loading gracefully even after throwing', async () => {
-    fakeAsyncStorage.getItem = jest
+    mockAsyncStorage.getItem = jest
       .fn()
       .mockRejectedValueOnce(new Error('Storage read error'));
 
-    expect(presenter.loading).toBe(false);
-    await expect(presenter.load()).rejects.toThrow();
-    expect(presenter.loading).toBe(false);
-    expect(presenter.viewModel).toStrictEqual([]);
+    expect(characterSheetsListScreenPresenter.loading).toBe(false);
+    await expect(characterSheetsListScreenPresenter.load()).rejects.toThrow();
+    expect(characterSheetsListScreenPresenter.loading).toBe(false);
+    expect(characterSheetsListScreenPresenter.viewModel).toStrictEqual([]);
   });
 });

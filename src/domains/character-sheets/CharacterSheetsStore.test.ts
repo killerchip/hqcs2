@@ -4,41 +4,39 @@ import { Container } from 'inversify';
 import { CharacterSheetsStore } from './CharacterSheetsStore';
 import { NewCharacterSheet } from '../domain.types';
 
-import {
-  getFactoryDefaultCharacterSheets,
-  resetFactoryDefaults,
-} from '~config/factoryDefaults';
-import { getTestIOC } from '~config/ioc/TestIOC';
+import { getFactoryDefaultCharacterSheets } from '~config/factoryDefaults';
 import {
   CharSheetsGateway,
   ICharSheetsGateway,
 } from '~gateways/CharacterSheetsGateway';
-import { getFakeUuid } from '~testHelpers/fakeUuid';
+import { AppTestHelper } from '~testHelpers/AppTestHelper';
+import { getMockUuid } from '~testHelpers/mockUuid';
 
 // This is a typical example for unit test of a store.
 describe('CharacterSheetsStore', () => {
-  // Container
-  let container: Container | null = null;
+  let appTestHelper: AppTestHelper;
+  let container: Container;
 
   // Mocks/Spies
-  let mockCharSheetsGateway: ICharSheetsGateway | null = null;
+  let mockCharSheetsGateway: ICharSheetsGateway;
   let factoryDefaultsSheets: ReturnType<
     typeof getFactoryDefaultCharacterSheets
   >;
 
   // The class under test
-  let charSheetsStore: CharacterSheetsStore | null = null;
+  let charSheetsStore: CharacterSheetsStore;
 
   beforeEach(async () => {
     // Setup base container
-    container = getTestIOC();
+    appTestHelper = new AppTestHelper();
+    ({ container, factoryDefaultsSheets } = appTestHelper);
 
     // Create mocks/spies dependencies
     mockCharSheetsGateway = {
       loadInitialData: jest
         .fn()
         .mockReturnValue(
-          Promise.resolve(getFactoryDefaultCharacterSheets(getFakeUuid)),
+          Promise.resolve(getFactoryDefaultCharacterSheets(getMockUuid)),
         ),
       setList: jest.fn(),
       setItem: jest.fn(),
@@ -51,10 +49,7 @@ describe('CharacterSheetsStore', () => {
       .bind<ICharSheetsGateway>(CharSheetsGateway)
       .toConstantValue(mockCharSheetsGateway);
 
-    // Prepare some test data
-    factoryDefaultsSheets = getFactoryDefaultCharacterSheets(getFakeUuid);
-
-    // Create instance of class under test
+    // Create instance of class under test with mock/spies above
     charSheetsStore = container.get(CharacterSheetsStore);
 
     // Prepare the instance for testing
@@ -63,7 +58,7 @@ describe('CharacterSheetsStore', () => {
 
   afterEach(() => {
     // Cleanup after each test
-    resetFactoryDefaults();
+    appTestHelper.reset();
   });
 
   it('should create an instance', () => {
@@ -105,7 +100,7 @@ describe('CharacterSheetsStore', () => {
       bodyPoints: 4,
       mindPoints: 5,
     };
-    const itemToCreate = { ...newCharSheet, id: getFakeUuid() };
+    const itemToCreate = { ...newCharSheet, id: getMockUuid() };
 
     // Test-specific mock
     mockCharSheetsGateway!.setItem = jest
@@ -141,7 +136,7 @@ describe('CharacterSheetsStore', () => {
   it('throws an error if item to update is not found', async () => {
     // Test data
     const newItem = { ...charSheetsStore!.list[1], name: 'Gimli' };
-    newItem.id = getFakeUuid();
+    newItem.id = getMockUuid();
 
     // Test and assert
     await expect(charSheetsStore!.updateItem(newItem)).rejects.toThrow();

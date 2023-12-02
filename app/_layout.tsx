@@ -1,3 +1,5 @@
+// noinspection JSUnusedGlobalSymbols
+
 import { Stack } from 'expo-router';
 import { configure } from 'mobx';
 
