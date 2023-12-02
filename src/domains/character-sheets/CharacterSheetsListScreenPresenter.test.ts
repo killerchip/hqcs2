@@ -63,5 +63,14 @@ describe('CharacterSheetsListScreenPresenter', () => {
     expect(presenter.viewModel).toStrictEqual(defaultCharacterSheets);
   });
 
-  it.skip('handle fetch errors gracefully', async () => {});
+  it('handle loading gracefully even after throwing', async () => {
+    fakeAsyncStorage.getItem = jest
+      .fn()
+      .mockRejectedValueOnce(new Error('Storage read error'));
+
+    expect(presenter.loading).toBe(false);
+    await expect(presenter.load()).rejects.toThrow();
+    expect(presenter.loading).toBe(false);
+    expect(presenter.viewModel).toStrictEqual([]);
+  });
 });

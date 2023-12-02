@@ -16,11 +16,14 @@ export class CharacterSheetsListScreenPresenter {
   }
 
   async load() {
-    this.loading = true;
-    await this.charSheetsStore.load();
-    runInAction(() => {
-      this.loading = false;
-    });
+    try {
+      this.loading = true;
+      await this.charSheetsStore.load();
+    } finally {
+      runInAction(() => {
+        this.loading = false;
+      });
+    }
   }
 
   get viewModel() {
