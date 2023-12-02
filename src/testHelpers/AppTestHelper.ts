@@ -1,25 +1,27 @@
-import { getAsyncStorageFake } from './FakeAsyncStorage';
+import { FakeAsyncStorage, getFakeAsyncStorage } from './FakeAsyncStorage';
 import { getFakeUuid } from './fakeUuid';
 
+import {
+  getFactoryDefaultCharacterSheets,
+  resetFactoryDefaults,
+} from '~config/factoryDefaults';
 import { BaseIOC } from '~config/ioc/BaseIOC';
+import { getTestIOC } from '~config/ioc/TestIOC';
 import { Injectables } from '~config/ioc/injectables';
-import { CharSheetsGateway } from '~gateways/CharacterSheetsGateway';
+import {
+  AsyncStorage,
+  CharSheetsGateway,
+} from '~gateways/CharacterSheetsGateway';
 
 export class AppTestHelper {
-  container = new BaseIOC().buildBaseTemplate();
-  charSheetsGateway: CharSheetsGateway | null = null;
-  asyncStorageFake = getAsyncStorageFake();
+  container = getTestIOC();
+  charSheetsGateway: CharSheetsGateway = this.container.get(CharSheetsGateway);
+  fakeAsyncStorage = this.container.get<FakeAsyncStorage>(
+    Injectables.AsyncStorage,
+  );
+  factoryDefaultsSheets = getFactoryDefaultCharacterSheets(getFakeUuid);
 
-  // 1. set up the app
-  init() {
-    this.container
-      .bind(Injectables.AsyncStorage)
-      .toConstantValue(this.asyncStorageFake);
-
-    this.container
-      .bind(Injectables.GetUuid)
-      .toConstantValue(() => getFakeUuid());
-
-    this.charSheetsGateway = this.container.get(CharSheetsGateway);
+  reset() {
+    resetFactoryDefaults();
   }
 }
