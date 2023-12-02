@@ -52,7 +52,6 @@ describe('CharacterSheetsGateway', () => {
     // Now we get the instance(s) of the class(es) we are testing
     charSheetsGateway = container.get(CharSheetsGateway);
     factoryDefaultsSheets = getFactoryDefaultCharacterSheets(getFakeUuid);
-
     // And now we prepare the class for testing
     await charSheetsGateway?.loadInitialData();
   });
@@ -78,7 +77,7 @@ describe('CharacterSheetsGateway', () => {
     expect(charSheetsGateway!.charSheets[0]).toBe(newCharSheet);
     expect(fakeAsyncStorage!.setItem).toHaveBeenCalledWith(
       config.storageKey + '_charSheets',
-      JSON.stringify(charSheetsGateway!.charSheets),
+      JSON.stringify({ list: charSheetsGateway!.charSheets }),
     );
   });
 
@@ -106,7 +105,7 @@ describe('CharacterSheetsGateway', () => {
     expect(charSheetsGateway!.charSheets[2]).toBe(createdCharSheet);
     expect(fakeAsyncStorage!.setItem).toHaveBeenCalledWith(
       config.storageKey + '_charSheets',
-      JSON.stringify(charSheetsGateway!.charSheets),
+      JSON.stringify({ list: charSheetsGateway!.charSheets }),
     );
   });
 
@@ -121,7 +120,7 @@ describe('CharacterSheetsGateway', () => {
     expect(charSheetsGateway!.charSheets.length).toBe(1);
     expect(fakeAsyncStorage!.setItem).toHaveBeenCalledWith(
       config.storageKey + '_charSheets',
-      JSON.stringify([charSheetsGateway!.charSheets[0]]),
+      JSON.stringify({ list: [charSheetsGateway!.charSheets[0]] }),
     );
   });
 
@@ -144,7 +143,9 @@ describe('CharacterSheetsGateway', () => {
     fakeAsyncStorage!.getItem = jest
       .fn()
       .mockReturnValueOnce(
-        new Promise<string>((resolve) => resolve(JSON.stringify(dbCharSheets))),
+        new Promise<string>((resolve) =>
+          resolve(JSON.stringify({ list: dbCharSheets })),
+        ),
       );
 
     // Test

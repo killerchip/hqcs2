@@ -6,7 +6,7 @@ export function getFactoryDefaultCharacterSheets(
   uuidGenerator: () => string,
 ): CharacterSheetDto[] {
   if (defaults) {
-    return JSON.parse(JSON.stringify(defaults));
+    return defaults;
   }
 
   defaults = [
@@ -32,7 +32,7 @@ export function getFactoryDefaultCharacterSheets(
     },
   ];
 
-  return JSON.parse(JSON.stringify(defaults));
+  return defaults;
 }
 
 export function resetFactoryDefaults() {
