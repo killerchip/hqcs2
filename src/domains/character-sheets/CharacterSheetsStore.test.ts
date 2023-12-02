@@ -13,25 +13,27 @@ import {
   CharSheetsGateway,
   ICharSheetsGateway,
 } from '~gateways/CharacterSheetsGateway';
+import { AppTestHelper } from '~testHelpers/AppTestHelper';
 import { getFakeUuid } from '~testHelpers/fakeUuid';
 
 // This is a typical example for unit test of a store.
 describe('CharacterSheetsStore', () => {
-  // Container
-  let container: Container | null = null;
+  let appTestHelper: AppTestHelper;
+  let container: Container;
 
   // Mocks/Spies
-  let mockCharSheetsGateway: ICharSheetsGateway | null = null;
+  let mockCharSheetsGateway: ICharSheetsGateway;
   let factoryDefaultsSheets: ReturnType<
     typeof getFactoryDefaultCharacterSheets
   >;
 
   // The class under test
-  let charSheetsStore: CharacterSheetsStore | null = null;
+  let charSheetsStore: CharacterSheetsStore;
 
   beforeEach(async () => {
     // Setup base container
-    container = getTestIOC();
+    appTestHelper = new AppTestHelper();
+    ({ container, factoryDefaultsSheets } = appTestHelper);
 
     // Create mocks/spies dependencies
     mockCharSheetsGateway = {
@@ -51,10 +53,7 @@ describe('CharacterSheetsStore', () => {
       .bind<ICharSheetsGateway>(CharSheetsGateway)
       .toConstantValue(mockCharSheetsGateway);
 
-    // Prepare some test data
-    factoryDefaultsSheets = getFactoryDefaultCharacterSheets(getFakeUuid);
-
-    // Create instance of class under test
+    // Create instance of class under test with mock/spies above
     charSheetsStore = container.get(CharacterSheetsStore);
 
     // Prepare the instance for testing
