@@ -17,6 +17,7 @@ export class BaseIOC {
       .bind(CharSheetsGateway)
       .to(CharSheetsGateway)
       .inSingletonScope();
+
     // Add your singleton bindings here
     return this.container;
   };
