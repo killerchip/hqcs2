@@ -3,17 +3,7 @@ import 'reflect-metadata';
 import { CharacterSheetDto, NewCharacterSheetDto } from './dto.types';
 
 import { config } from '~config/config';
-import {
-  getFactoryDefaultCharacterSheets,
-  resetFactoryDefaults,
-} from '~config/factoryDefaults';
-import { Injectables } from '~config/ioc/injectables';
-import {
-  AsyncStorage,
-  CharSheetsGateway,
-} from '~gateways/CharacterSheetsGateway';
 import { AppTestHelper } from '~testHelpers/AppTestHelper';
-import { getFakeUuid } from '~testHelpers/fakeUuid';
 
 /** Typical Unit test for a class, that uses different dependencies, in test environment we can mock them.
  * */
@@ -45,7 +35,7 @@ describe('CharacterSheetsGateway', () => {
 
     // Assert
     expect(appTestHelper.charSheetsGateway.charSheets[0]).toBe(newCharSheet);
-    expect(appTestHelper.fakeAsyncStorage.setItem).toHaveBeenCalledWith(
+    expect(appTestHelper.mockAsyncStorage.setItem).toHaveBeenCalledWith(
       config.storageKey + '_charSheets',
       JSON.stringify({ list: appTestHelper.charSheetsGateway.charSheets }),
     );
@@ -75,7 +65,7 @@ describe('CharacterSheetsGateway', () => {
     expect(appTestHelper.charSheetsGateway.charSheets[2]).toBe(
       createdCharSheet,
     );
-    expect(appTestHelper.fakeAsyncStorage.setItem).toHaveBeenCalledWith(
+    expect(appTestHelper.mockAsyncStorage.setItem).toHaveBeenCalledWith(
       config.storageKey + '_charSheets',
       JSON.stringify({ list: appTestHelper.charSheetsGateway.charSheets }),
     );
@@ -90,7 +80,7 @@ describe('CharacterSheetsGateway', () => {
 
     // Assert
     expect(appTestHelper.charSheetsGateway.charSheets.length).toBe(1);
-    expect(appTestHelper.fakeAsyncStorage.setItem).toHaveBeenCalledWith(
+    expect(appTestHelper.mockAsyncStorage.setItem).toHaveBeenCalledWith(
       config.storageKey + '_charSheets',
       JSON.stringify({ list: [appTestHelper.charSheetsGateway.charSheets[0]] }),
     );
@@ -112,7 +102,7 @@ describe('CharacterSheetsGateway', () => {
     ];
 
     // Setup test-specific mocks/spies
-    appTestHelper.fakeAsyncStorage!.getItem = jest
+    appTestHelper.mockAsyncStorage!.getItem = jest
       .fn()
       .mockReturnValueOnce(
         new Promise<string>((resolve) =>

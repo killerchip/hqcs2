@@ -10,7 +10,7 @@ import {
   ICharSheetsGateway,
 } from '~gateways/CharacterSheetsGateway';
 import { AppTestHelper } from '~testHelpers/AppTestHelper';
-import { getFakeUuid } from '~testHelpers/fakeUuid';
+import { getMockUuid } from '~testHelpers/mockUuid';
 
 // This is a typical example for unit test of a store.
 describe('CharacterSheetsStore', () => {
@@ -36,7 +36,7 @@ describe('CharacterSheetsStore', () => {
       loadInitialData: jest
         .fn()
         .mockReturnValue(
-          Promise.resolve(getFactoryDefaultCharacterSheets(getFakeUuid)),
+          Promise.resolve(getFactoryDefaultCharacterSheets(getMockUuid)),
         ),
       setList: jest.fn(),
       setItem: jest.fn(),
@@ -100,7 +100,7 @@ describe('CharacterSheetsStore', () => {
       bodyPoints: 4,
       mindPoints: 5,
     };
-    const itemToCreate = { ...newCharSheet, id: getFakeUuid() };
+    const itemToCreate = { ...newCharSheet, id: getMockUuid() };
 
     // Test-specific mock
     mockCharSheetsGateway!.setItem = jest
@@ -136,7 +136,7 @@ describe('CharacterSheetsStore', () => {
   it('throws an error if item to update is not found', async () => {
     // Test data
     const newItem = { ...charSheetsStore!.list[1], name: 'Gimli' };
-    newItem.id = getFakeUuid();
+    newItem.id = getMockUuid();
 
     // Test and assert
     await expect(charSheetsStore!.updateItem(newItem)).rejects.toThrow();

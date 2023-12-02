@@ -5,14 +5,14 @@ import { when } from 'mobx';
 import { CharacterSheetsListScreenPresenter } from '~domains/character-sheets/CharacterSheetsListScreen/CharacterSheetsListScreenPresenter';
 import { CharacterSheet } from '~domains/domain.types';
 import { AppTestHelper } from '~testHelpers/AppTestHelper';
-import { FakeAsyncStorage } from '~testHelpers/FakeAsyncStorage';
+import { MockAsyncStorage } from '~testHelpers/MockAsyncStorage';
 
 // Typical black box test of a screen presenter
 describe('CharacterSheetsListScreenPresenter', () => {
   let appTestHelper: AppTestHelper;
   let container: Container;
   let characterSheetsListScreenPresenter: CharacterSheetsListScreenPresenter;
-  let fakeAsyncStorage: FakeAsyncStorage;
+  let mockAsyncStorage: MockAsyncStorage;
   let defaultCharacterSheets: CharacterSheet[];
 
   beforeEach(() => {
@@ -20,12 +20,12 @@ describe('CharacterSheetsListScreenPresenter', () => {
     ({
       container,
       factoryDefaultsSheets: defaultCharacterSheets,
-      fakeAsyncStorage,
+      mockAsyncStorage,
       characterSheetsListScreenPresenter,
     } = appTestHelper);
 
     // Setup mock AsyncStorage specific to this suite
-    fakeAsyncStorage.getItem = jest
+    mockAsyncStorage.getItem = jest
       .fn()
       .mockReturnValueOnce(
         Promise.resolve(JSON.stringify({ list: defaultCharacterSheets })),
@@ -44,7 +44,7 @@ describe('CharacterSheetsListScreenPresenter', () => {
 
   it('should allow for initial loading of data', async () => {
     await characterSheetsListScreenPresenter.load();
-    expect(fakeAsyncStorage.getItem).toHaveBeenCalled();
+    expect(mockAsyncStorage.getItem).toHaveBeenCalled();
   });
 
   it('should serve viewModel of the list', async () => {
@@ -65,7 +65,7 @@ describe('CharacterSheetsListScreenPresenter', () => {
   });
 
   it('handle loading gracefully even after throwing', async () => {
-    fakeAsyncStorage.getItem = jest
+    mockAsyncStorage.getItem = jest
       .fn()
       .mockRejectedValueOnce(new Error('Storage read error'));
 

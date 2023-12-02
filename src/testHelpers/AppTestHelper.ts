@@ -1,5 +1,5 @@
-import { FakeAsyncStorage } from './FakeAsyncStorage';
-import { getFakeUuid } from './fakeUuid';
+import { MockAsyncStorage } from './MockAsyncStorage';
+import { getMockUuid } from './mockUuid';
 
 import {
   getFactoryDefaultCharacterSheets,
@@ -13,10 +13,11 @@ import { CharSheetsGateway } from '~gateways/CharacterSheetsGateway';
 export class AppTestHelper {
   container = getTestIOC();
   charSheetsGateway: CharSheetsGateway = this.container.get(CharSheetsGateway);
-  fakeAsyncStorage = this.container.get<FakeAsyncStorage>(
+  mockAsyncStorage = this.container.get<MockAsyncStorage>(
     Injectables.AsyncStorage,
   );
-  factoryDefaultsSheets = getFactoryDefaultCharacterSheets(getFakeUuid);
+  factoryDefaultsSheets = getFactoryDefaultCharacterSheets(getMockUuid);
+  // noinspection JSUnusedGlobalSymbols
   characterSheetsListScreenPresenter = this.container.get(
     CharacterSheetsListScreenPresenter,
   );
