@@ -1,17 +1,14 @@
-import { FakeAsyncStorage, getFakeAsyncStorage } from './FakeAsyncStorage';
+import { FakeAsyncStorage } from './FakeAsyncStorage';
 import { getFakeUuid } from './fakeUuid';
 
 import {
   getFactoryDefaultCharacterSheets,
   resetFactoryDefaults,
 } from '~config/factoryDefaults';
-import { BaseIOC } from '~config/ioc/BaseIOC';
 import { getTestIOC } from '~config/ioc/TestIOC';
 import { Injectables } from '~config/ioc/injectables';
-import {
-  AsyncStorage,
-  CharSheetsGateway,
-} from '~gateways/CharacterSheetsGateway';
+import { CharacterSheetsListScreenPresenter } from '~domains/character-sheets/CharacterSheetsListScreen/CharacterSheetsListScreenPresenter';
+import { CharSheetsGateway } from '~gateways/CharacterSheetsGateway';
 
 export class AppTestHelper {
   container = getTestIOC();
@@ -20,6 +17,9 @@ export class AppTestHelper {
     Injectables.AsyncStorage,
   );
   factoryDefaultsSheets = getFactoryDefaultCharacterSheets(getFakeUuid);
+  characterSheetsListScreenPresenter = this.container.get(
+    CharacterSheetsListScreenPresenter,
+  );
 
   reset() {
     resetFactoryDefaults();

@@ -4,11 +4,7 @@ import { Container } from 'inversify';
 import { CharacterSheetsStore } from './CharacterSheetsStore';
 import { NewCharacterSheet } from '../domain.types';
 
-import {
-  getFactoryDefaultCharacterSheets,
-  resetFactoryDefaults,
-} from '~config/factoryDefaults';
-import { getTestIOC } from '~config/ioc/TestIOC';
+import { getFactoryDefaultCharacterSheets } from '~config/factoryDefaults';
 import {
   CharSheetsGateway,
   ICharSheetsGateway,
@@ -62,7 +58,7 @@ describe('CharacterSheetsStore', () => {
 
   afterEach(() => {
     // Cleanup after each test
-    resetFactoryDefaults();
+    appTestHelper.reset();
   });
 
   it('should create an instance', () => {
