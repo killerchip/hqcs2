@@ -51,9 +51,9 @@ describe('CharacterSheetsGateway', () => {
 
     // Now we get the instance(s) of the class(es) we are testing
     charSheetsGateway = container.get(CharSheetsGateway);
-    (factoryDefaultsSheets = getFactoryDefaultCharacterSheets(getFakeUuid)),
-      // And now we prepare the class for testing
-      await charSheetsGateway?.loadInitialData();
+    factoryDefaultsSheets = getFactoryDefaultCharacterSheets(getFakeUuid);
+    // And now we prepare the class for testing
+    await charSheetsGateway?.loadInitialData();
   });
 
   afterEach(() => {

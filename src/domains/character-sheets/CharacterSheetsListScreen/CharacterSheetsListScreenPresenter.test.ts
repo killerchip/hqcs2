@@ -8,7 +8,7 @@ import {
 } from '~config/factoryDefaults';
 import { getTestIOC } from '~config/ioc/TestIOC';
 import { Injectables } from '~config/ioc/injectables';
-import { CharacterSheetsListScreenPresenter } from '~domains/character-sheets/CharacterSheetsListScreenPresenter';
+import { CharacterSheetsListScreenPresenter } from '~domains/character-sheets/CharacterSheetsListScreen/CharacterSheetsListScreenPresenter';
 import { CharacterSheet } from '~domains/domain.types';
 import { FakeAsyncStorage } from '~testHelpers/FakeAsyncStorage';
 import { getFakeUuid } from '~testHelpers/fakeUuid';

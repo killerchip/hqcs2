@@ -15,6 +15,10 @@ export class CharacterSheetsListScreenPresenter {
     });
   }
 
+  get viewModel() {
+    return this.charSheetsStore.list;
+  }
+
   async load() {
     try {
       this.loading = true;
@@ -24,9 +28,5 @@ export class CharacterSheetsListScreenPresenter {
         this.loading = false;
       });
     }
-  }
-
-  get viewModel() {
-    return this.charSheetsStore.list;
   }
 }
