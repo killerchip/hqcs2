@@ -15,11 +15,11 @@ import {
 
 @injectable()
 export class CharacterSheetsStore {
-  @inject(CharSheetsGateway) private charSheetsGateway!: ICharSheetsGateway;
-
   list: CharacterSheet[] = [];
 
-  constructor() {
+  constructor(
+    @inject(CharSheetsGateway) private charSheetsGateway: ICharSheetsGateway,
+  ) {
     makeObservable(this, {
       load: action,
       updateItem: action,

@@ -26,8 +26,10 @@ export type ICharSheetsGateway = {
 
 @injectable()
 export class CharSheetsGateway implements ICharSheetsGateway {
-  @inject(Injectables.AsyncStorage) private localStorage!: AsyncStorage;
-  @inject(Injectables.GetUuid) private getUuid!: () => string;
+  constructor(
+    @inject(Injectables.AsyncStorage) private localStorage: AsyncStorage,
+    @inject(Injectables.GetUuid) private getUuid: () => string,
+  ) {}
 
   charSheets: CharacterSheetDto[] = [];
 

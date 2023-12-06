@@ -6,10 +6,10 @@ import { getCharacterSheetListItemVM } from '~domains/view.models';
 
 @injectable()
 export class CharacterSheetsListScreenPresenter {
-  @inject(CharacterSheetsStore) private charSheetsStore!: CharacterSheetsStore;
-
   loading = false;
-  constructor() {
+  constructor(
+    @inject(CharacterSheetsStore) private charSheetsStore: CharacterSheetsStore,
+  ) {
     makeObservable(this, {
       viewModel: computed,
       loading: observable,
