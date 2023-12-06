@@ -2,6 +2,7 @@ import { inject, injectable } from 'inversify';
 import { computed, makeObservable, observable, runInAction } from 'mobx';
 
 import { CharacterSheetsStore } from '~domains/character-sheets/CharacterSheetsStore';
+import { getCharacterSheetListItemVM } from '~domains/view.models';
 
 @injectable()
 export class CharacterSheetsListScreenPresenter {
@@ -16,7 +17,7 @@ export class CharacterSheetsListScreenPresenter {
   }
 
   get viewModel() {
-    return this.charSheetsStore.list;
+    return this.charSheetsStore.list.map(getCharacterSheetListItemVM);
   }
 
   async load() {

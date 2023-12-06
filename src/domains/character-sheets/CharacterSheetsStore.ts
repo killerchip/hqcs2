@@ -5,7 +5,8 @@ import {
   CharacterSheet,
   isNewCharSheet,
   NewCharacterSheet,
-} from '../domain.types';
+  toCharacterSheet,
+} from '../data.models';
 
 import {
   CharSheetsGateway,
@@ -26,7 +27,8 @@ export class CharacterSheetsStore {
   }
 
   async load() {
-    const list = await this.charSheetsGateway.loadInitialData();
+    const listDto = await this.charSheetsGateway.loadInitialData();
+    const list = listDto?.map(toCharacterSheet);
     runInAction(() => {
       this.list = list ?? [];
     });
