@@ -1,13 +1,33 @@
 import { Link, Stack } from 'expo-router';
+import { observer } from 'mobx-react-lite';
+import { useEffect } from 'react';
 import { Text } from 'react-native';
-export default function HomePage() {
+
+import { withInjections } from '~config/ioc/injection.react';
+import { CharacterSheetsListScreenPresenter } from '~domains/character-sheets/CharacterSheetsListScreen/CharacterSheetsListScreenPresenter';
+
+type Props = {
+  presenter: CharacterSheetsListScreenPresenter;
+};
+const HomePage = observer(function HomePage({ presenter }: Props) {
+  useEffect(() => {
+    presenter.load().then();
+  }, []);
+
   return (
     <>
       <Stack.Screen options={{ title: 'Character Sheets' }} />
-      <Text>Hello world</Text>
+      {presenter.viewModel.map((sheet) => (
+        <Text key={sheet.id}>
+          {sheet.name} - {sheet.class}
+        </Text>
+      ))}
       <Link href={{ pathname: '/charsheets/[id]', params: { id: 'abc123' } }}>
         <Text>Character Sheets</Text>
       </Link>
     </>
   );
-}
+});
+export default withInjections({
+  presenter: CharacterSheetsListScreenPresenter,
+})(HomePage);
