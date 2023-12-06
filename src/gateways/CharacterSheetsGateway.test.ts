@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 
-import { CharacterSheetDto, NewCharacterSheetDto } from './dto.types';
+import { CharacterSheetDto, NewCharacterSheetDto } from './dto.models';
 
 import { config } from '~config/config';
 import { AppTestHelper } from '~testHelpers/AppTestHelper';

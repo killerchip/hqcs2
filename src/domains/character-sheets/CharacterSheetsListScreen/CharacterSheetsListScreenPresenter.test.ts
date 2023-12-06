@@ -3,7 +3,7 @@ import { Container } from 'inversify';
 import { when } from 'mobx';
 
 import { CharacterSheetsListScreenPresenter } from '~domains/character-sheets/CharacterSheetsListScreen/CharacterSheetsListScreenPresenter';
-import { CharacterSheet } from '~domains/domain.types';
+import { CharacterSheet } from '~domains/data.models';
 import { AppTestHelper } from '~testHelpers/AppTestHelper';
 import { MockAsyncStorage } from '~testHelpers/MockAsyncStorage';
 

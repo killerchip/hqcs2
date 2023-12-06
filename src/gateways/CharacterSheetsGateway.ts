@@ -4,7 +4,7 @@ import {
   CharacterSheetDto,
   isNewCharSheetDto,
   NewCharacterSheetDto,
-} from './dto.types';
+} from './dto.models';
 
 import { config } from '~config/config';
 import { getFactoryDefaultCharacterSheets } from '~config/factoryDefaults';

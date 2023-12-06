@@ -5,7 +5,7 @@ import {
   CharacterSheet,
   isNewCharSheet,
   NewCharacterSheet,
-} from '../domain.types';
+} from '../data.models';
 
 import {
   CharSheetsGateway,
