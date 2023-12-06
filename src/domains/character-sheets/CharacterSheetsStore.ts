@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify';
-import { action, makeObservable, runInAction } from 'mobx';
+import { action, makeObservable, observable, runInAction } from 'mobx';
 
 import {
   CharacterSheet,
@@ -21,6 +21,7 @@ export class CharacterSheetsStore {
     @inject(CharSheetsGateway) private charSheetsGateway: ICharSheetsGateway,
   ) {
     makeObservable(this, {
+      list: observable,
       load: action,
       updateItem: action,
     });
