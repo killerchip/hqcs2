@@ -1,5 +1,11 @@
 import { inject, injectable } from 'inversify';
-import { computed, makeObservable, observable, runInAction } from 'mobx';
+import {
+  action,
+  computed,
+  makeObservable,
+  observable,
+  runInAction,
+} from 'mobx';
 
 import { CharacterSheetsStore } from '~domains/character-sheets/CharacterSheetsStore';
 import { getCharacterSheetListItemVM } from '~domains/view.models';
@@ -13,6 +19,7 @@ export class CharacterSheetsListScreenPresenter {
     makeObservable(this, {
       viewModel: computed,
       loading: observable,
+      load: action,
     });
   }
 
