@@ -8,3 +8,7 @@ export function isNewCharSheet(
 ): charSheet is NewCharacterSheetDto {
   return (charSheet as CharacterSheetDto).id === undefined;
 }
+
+export function toCharacterSheet(dto: CharacterSheetDto): CharacterSheet {
+  return dto as CharacterSheet;
+}
