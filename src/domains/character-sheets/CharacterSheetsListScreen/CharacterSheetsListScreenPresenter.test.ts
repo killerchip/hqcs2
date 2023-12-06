@@ -4,6 +4,7 @@ import { when } from 'mobx';
 
 import { CharacterSheetsListScreenPresenter } from '~domains/character-sheets/CharacterSheetsListScreen/CharacterSheetsListScreenPresenter';
 import { CharacterSheet } from '~domains/data.models';
+import { getCharacterSheetListItemVM } from '~domains/view.models';
 import { AppTestHelper } from '~testHelpers/AppTestHelper';
 import { MockAsyncStorage } from '~testHelpers/MockAsyncStorage';
 
@@ -50,7 +51,7 @@ describe('CharacterSheetsListScreenPresenter', () => {
   it('should serve viewModel of the list', async () => {
     await characterSheetsListScreenPresenter.load();
     expect(characterSheetsListScreenPresenter.viewModel).toStrictEqual(
-      defaultCharacterSheets,
+      defaultCharacterSheets.map(getCharacterSheetListItemVM),
     );
   });
 
@@ -60,7 +61,7 @@ describe('CharacterSheetsListScreenPresenter', () => {
     expect(characterSheetsListScreenPresenter.loading).toBe(true);
     await when(() => !characterSheetsListScreenPresenter.loading);
     expect(characterSheetsListScreenPresenter.viewModel).toStrictEqual(
-      defaultCharacterSheets,
+      defaultCharacterSheets.map(getCharacterSheetListItemVM),
     );
   });
 
