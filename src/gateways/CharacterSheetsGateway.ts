@@ -26,12 +26,11 @@ export type ICharSheetsGateway = {
 
 @injectable()
 export class CharSheetsGateway implements ICharSheetsGateway {
+  charSheets: CharacterSheetDto[] = [];
   constructor(
     @inject(Injectables.AsyncStorage) private localStorage: AsyncStorage,
     @inject(Injectables.GetUuid) private getUuid: () => string,
   ) {}
-
-  charSheets: CharacterSheetDto[] = [];
 
   loadInitialData = async (): Promise<CharacterSheetDto[]> => {
     const charSheets = await this.load();
