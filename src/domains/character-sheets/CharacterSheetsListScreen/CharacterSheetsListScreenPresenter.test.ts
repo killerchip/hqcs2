@@ -4,6 +4,8 @@ import { when } from 'mobx';
 
 import { CharacterSheetsListScreenPresenter } from '~domains/character-sheets/CharacterSheetsListScreen/CharacterSheetsListScreenPresenter';
 import { CharacterSheet } from '~domains/data.models';
+import { IRouter } from '~domains/shared/RoutingService/RoutingService';
+import { ROUTES } from '~domains/shared/RoutingService/routes';
 import { getCharacterSheetListItemVM } from '~domains/view.models';
 import { AppTestHelper } from '~testHelpers/AppTestHelper';
 import { MockAsyncStorage } from '~testHelpers/MockAsyncStorage';
@@ -15,6 +17,7 @@ describe('CharacterSheetsListScreenPresenter', () => {
   let characterSheetsListScreenPresenter: CharacterSheetsListScreenPresenter;
   let mockAsyncStorage: MockAsyncStorage;
   let defaultCharacterSheets: CharacterSheet[];
+  let mockRouter: IRouter;
 
   beforeEach(() => {
     appTestHelper = new AppTestHelper();
@@ -23,6 +26,7 @@ describe('CharacterSheetsListScreenPresenter', () => {
       factoryDefaultsSheets: defaultCharacterSheets,
       mockAsyncStorage,
       characterSheetsListScreenPresenter,
+      mockRouter,
     } = appTestHelper);
 
     // Setup mock AsyncStorage specific to this suite
@@ -74,5 +78,18 @@ describe('CharacterSheetsListScreenPresenter', () => {
     await expect(characterSheetsListScreenPresenter.load()).rejects.toThrow();
     expect(characterSheetsListScreenPresenter.loading).toBe(false);
     expect(characterSheetsListScreenPresenter.charSheetList).toStrictEqual([]);
+  });
+
+  it('allows navigation to specific charsheet page', async () => {
+    const randomIndex = Math.floor(
+      Math.random() * defaultCharacterSheets.length,
+    );
+    const targetSheetId = defaultCharacterSheets[randomIndex].id;
+
+    characterSheetsListScreenPresenter.goToCharSheetPage(targetSheetId);
+    expect(mockRouter.push).toHaveBeenCalledWith({
+      pathname: ROUTES.CHARACTER_SHEET,
+      params: { id: targetSheetId },
+    });
   });
 });

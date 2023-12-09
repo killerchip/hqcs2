@@ -17,7 +17,10 @@ function CharSheetListScreenComponent({ presenter }: Props) {
   }, []);
 
   const renderItem: ListRenderItem<CharacterSheetListItemVM> = ({ item }) => (
-    <CharSheetListItem charSheet={item} />
+    <CharSheetListItem
+      charSheet={item}
+      onPress={() => presenter.goToCharSheetPage(item.id)}
+    />
   );
 
   return (
