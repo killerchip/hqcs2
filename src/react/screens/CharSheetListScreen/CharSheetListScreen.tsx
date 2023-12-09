@@ -1,10 +1,12 @@
-import { Link, Stack } from 'expo-router';
+import { Stack } from 'expo-router';
 import { observer } from 'mobx-react-lite';
 import { useEffect } from 'react';
-import { Text } from 'react-native';
+import { FlatList, ListRenderItem } from 'react-native';
 
 import { withInjections } from '~config/ioc/injection.react';
 import { CharacterSheetsListScreenPresenter } from '~domains/character-sheets/CharacterSheetsListScreen/CharacterSheetsListScreenPresenter';
+import { CharacterSheetListItemVM } from '~domains/view.models';
+import { CharSheetListItem } from '~react/screens/CharSheetListScreen/components/CharSheetListItem';
 
 type Props = {
   presenter: CharacterSheetsListScreenPresenter;
@@ -14,17 +16,17 @@ function CharSheetListScreenComponent({ presenter }: Props) {
     presenter.load().then();
   }, []);
 
+  const renderItem: ListRenderItem<CharacterSheetListItemVM> = ({ item }) => (
+    <CharSheetListItem charSheet={item} />
+  );
+
   return (
     <>
       <Stack.Screen options={{ title: 'Character Sheets' }} />
-      {presenter.viewModel.map((sheet) => (
-        <Text key={sheet.id}>
-          {sheet.name} - {sheet.class}
-        </Text>
-      ))}
-      <Link href={{ pathname: '/charsheets/[id]', params: { id: 'abc123' } }}>
-        <Text>Character Sheets</Text>
-      </Link>
+      <FlatList<CharacterSheetListItemVM>
+        data={presenter.charSheetList}
+        renderItem={renderItem}
+      />
     </>
   );
 }

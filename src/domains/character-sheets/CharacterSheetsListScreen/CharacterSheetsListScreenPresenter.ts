@@ -17,13 +17,13 @@ export class CharacterSheetsListScreenPresenter {
     @inject(CharacterSheetsStore) private charSheetsStore: CharacterSheetsStore,
   ) {
     makeObservable(this, {
-      viewModel: computed,
+      charSheetList: computed,
       loading: observable,
       load: action,
     });
   }
 
-  get viewModel() {
+  get charSheetList() {
     return this.charSheetsStore.list.map(getCharacterSheetListItemVM);
   }
 
