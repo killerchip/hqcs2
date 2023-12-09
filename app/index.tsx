@@ -9,7 +9,7 @@ import { CharacterSheetsListScreenPresenter } from '~domains/character-sheets/Ch
 type Props = {
   presenter: CharacterSheetsListScreenPresenter;
 };
-const HomePage = observer(function HomePage({ presenter }: Props) {
+function HomePage({ presenter }: Props) {
   useEffect(() => {
     presenter.load().then();
   }, []);
@@ -27,7 +27,7 @@ const HomePage = observer(function HomePage({ presenter }: Props) {
       </Link>
     </>
   );
-});
-export default withInjections({
+}
+export default withInjections<Props>({
   presenter: CharacterSheetsListScreenPresenter,
-})(HomePage);
+})(observer(HomePage));
