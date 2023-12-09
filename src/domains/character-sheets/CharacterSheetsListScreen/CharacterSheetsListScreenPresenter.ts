@@ -8,6 +8,8 @@ import {
 } from 'mobx';
 
 import { CharacterSheetsStore } from '~domains/character-sheets/CharacterSheetsStore';
+import { RoutingService } from '~domains/shared/RoutingService/RoutingService';
+import { ROUTES } from '~domains/shared/RoutingService/routes';
 import { getCharacterSheetListItemVM } from '~domains/view.models';
 
 @injectable()
@@ -15,6 +17,7 @@ export class CharacterSheetsListScreenPresenter {
   loading = false;
   constructor(
     @inject(CharacterSheetsStore) private charSheetsStore: CharacterSheetsStore,
+    @inject(RoutingService) private routingService: RoutingService,
   ) {
     makeObservable(this, {
       charSheetList: computed,
@@ -36,5 +39,12 @@ export class CharacterSheetsListScreenPresenter {
         this.loading = false;
       });
     }
+  }
+
+  goToCharSheetPage(id: string) {
+    this.routingService.push({
+      pathname: ROUTES.CHARACTER_SHEET,
+      params: { id },
+    });
   }
 }

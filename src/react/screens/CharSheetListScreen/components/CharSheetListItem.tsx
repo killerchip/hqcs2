@@ -1,24 +1,21 @@
-import { Link } from 'expo-router';
-import { Text, StyleSheet, Pressable } from 'react-native';
+import React from 'react';
+import { Text, StyleSheet, Pressable, View } from 'react-native';
 
 import { CharacterSheetListItemVM } from '~domains/view.models';
 
 type Props = {
   charSheet: CharacterSheetListItemVM;
+  onPress?: () => void;
 };
-export function CharSheetListItem({ charSheet }: Props) {
+export function CharSheetListItem({ charSheet, onPress }: Props) {
   return (
-    <Link
-      href={{ pathname: '/charsheets/[id]', params: { id: charSheet.id } }}
-      style={styles.wrapper}
-      asChild
-    >
-      <Pressable>
+    <Pressable onPress={onPress}>
+      <View style={styles.wrapper}>
         <Text key={charSheet.id}>
           {charSheet.name} - {charSheet.class}
         </Text>
-      </Pressable>
-    </Link>
+      </View>
+    </Pressable>
   );
 }
 
