@@ -1,4 +1,4 @@
-export type NewCharacterSheetDto = {
+export type NewCharSheetDto = {
   name: string;
   class: string;
   move: number;
@@ -8,10 +8,10 @@ export type NewCharacterSheetDto = {
   mindPoints: number;
 };
 
-export type CharacterSheetDto = NewCharacterSheetDto & { id: string };
+export type CharSheetDto = NewCharSheetDto & { id: string };
 
 export function isNewCharSheetDto(
-  charSheet: NewCharacterSheetDto | CharacterSheetDto,
-): charSheet is NewCharacterSheetDto {
-  return (charSheet as CharacterSheetDto).id === undefined;
+  charSheet: NewCharSheetDto | CharSheetDto,
+): charSheet is NewCharSheetDto {
+  return (charSheet as CharSheetDto).id === undefined;
 }

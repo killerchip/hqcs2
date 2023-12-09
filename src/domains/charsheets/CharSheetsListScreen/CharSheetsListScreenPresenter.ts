@@ -7,16 +7,16 @@ import {
   runInAction,
 } from 'mobx';
 
-import { CharacterSheetsStore } from '~domains/character-sheets/CharacterSheetsStore';
+import { CharSheetsStore } from '~domains/charsheets/CharSheetsStore';
 import { RoutingService } from '~domains/shared/RoutingService/RoutingService';
 import { ROUTES } from '~domains/shared/RoutingService/routes';
-import { getCharacterSheetListItemVM } from '~domains/view.models';
+import { getCharSheetListItemVM } from '~domains/view.models';
 
 @injectable()
-export class CharacterSheetsListScreenPresenter {
+export class CharSheetsListScreenPresenter {
   loading = false;
   constructor(
-    @inject(CharacterSheetsStore) private charSheetsStore: CharacterSheetsStore,
+    @inject(CharSheetsStore) private charSheetsStore: CharSheetsStore,
     @inject(RoutingService) private routingService: RoutingService,
   ) {
     makeObservable(this, {
@@ -27,7 +27,7 @@ export class CharacterSheetsListScreenPresenter {
   }
 
   get charSheetList() {
-    return this.charSheetsStore.list.map(getCharacterSheetListItemVM);
+    return this.charSheetsStore.list.map(getCharSheetListItemVM);
   }
 
   async load() {

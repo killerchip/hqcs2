@@ -1,30 +1,28 @@
 import 'reflect-metadata';
 import { Container } from 'inversify';
 
-import { CharacterSheetsStore } from './CharacterSheetsStore';
-import { NewCharacterSheet } from '../data.models';
+import { CharSheetsStore } from './CharSheetsStore';
+import { NewCharSheet } from '../data.models';
 
-import { getFactoryDefaultCharacterSheets } from '~config/factoryDefaults';
+import { getFactoryDefaultCharSheets } from '~config/factoryDefaults';
 import {
   CharSheetsGateway,
   ICharSheetsGateway,
-} from '~gateways/CharacterSheetsGateway';
+} from '~gateways/CharSheetsGateway';
 import { AppTestHelper } from '~testHelpers/AppTestHelper';
 import { getMockUuid } from '~testHelpers/mockUuid';
 
 // This is a typical example for unit test of a store.
-describe('CharacterSheetsStore', () => {
+describe('CharSheetsStore', () => {
   let appTestHelper: AppTestHelper;
   let container: Container;
 
   // Mocks/Spies
   let mockCharSheetsGateway: ICharSheetsGateway;
-  let factoryDefaultsSheets: ReturnType<
-    typeof getFactoryDefaultCharacterSheets
-  >;
+  let factoryDefaultsSheets: ReturnType<typeof getFactoryDefaultCharSheets>;
 
   // The class under test
-  let charSheetsStore: CharacterSheetsStore;
+  let charSheetsStore: CharSheetsStore;
 
   beforeEach(async () => {
     // Setup base container
@@ -36,7 +34,7 @@ describe('CharacterSheetsStore', () => {
       loadInitialData: jest
         .fn()
         .mockReturnValue(
-          Promise.resolve(getFactoryDefaultCharacterSheets(getMockUuid)),
+          Promise.resolve(getFactoryDefaultCharSheets(getMockUuid)),
         ),
       setList: jest.fn(),
       setItem: jest.fn(),
@@ -50,7 +48,7 @@ describe('CharacterSheetsStore', () => {
       .toConstantValue(mockCharSheetsGateway);
 
     // Create instance of class under test with mock/spies above
-    charSheetsStore = container.get(CharacterSheetsStore);
+    charSheetsStore = container.get(CharSheetsStore);
 
     // Prepare the instance for testing
     await charSheetsStore?.load();
@@ -91,7 +89,7 @@ describe('CharacterSheetsStore', () => {
 
   it('creates and stores a new item', async () => {
     // Test Data
-    const newCharSheet: NewCharacterSheet = {
+    const newCharSheet: NewCharSheet = {
       name: 'new name',
       class: 'new class',
       move: 1,

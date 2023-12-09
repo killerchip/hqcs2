@@ -1,6 +1,6 @@
 import { Container } from 'inversify';
 
-import { CharSheetsGateway } from '~gateways/CharacterSheetsGateway';
+import { CharSheetsGateway } from '~gateways/CharSheetsGateway';
 
 export class BaseIOC {
   container;

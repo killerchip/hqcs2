@@ -1,13 +1,13 @@
 import 'reflect-metadata';
 
-import { CharacterSheetDto, NewCharacterSheetDto } from './dto.models';
+import { CharSheetDto, NewCharSheetDto } from './dto.models';
 
 import { config } from '~config/config';
 import { AppTestHelper } from '~testHelpers/AppTestHelper';
 
 /** Typical Unit test for a class, that uses different dependencies, in test environment we can mock them.
  * */
-describe('CharacterSheetsGateway', () => {
+describe('CharSheetsGateway', () => {
   let appTestHelper: AppTestHelper;
 
   beforeEach(async () => {
@@ -25,13 +25,13 @@ describe('CharacterSheetsGateway', () => {
     );
   });
 
-  it('updates character sheet and saves the whole list', () => {
+  it('updates char sheet and saves the whole list', () => {
     // Setup test data
     const charSheet = appTestHelper.charSheetsGateway.charSheets[0];
     const newCharSheet = { ...charSheet, name: 'new name' };
 
     // Test
-    appTestHelper.charSheetsGateway.setItem(newCharSheet as CharacterSheetDto);
+    appTestHelper.charSheetsGateway.setItem(newCharSheet as CharSheetDto);
 
     // Assert
     expect(appTestHelper.charSheetsGateway.charSheets[0]).toBe(newCharSheet);
@@ -41,9 +41,9 @@ describe('CharacterSheetsGateway', () => {
     );
   });
 
-  it('allows creating a new character sheet', async () => {
+  it('allows creating a new char sheet', async () => {
     // Create test data;
-    const newCharSheet: NewCharacterSheetDto = {
+    const newCharSheet: NewCharSheetDto = {
       name: 'new name',
       class: 'new class',
       move: 1,
@@ -71,7 +71,7 @@ describe('CharacterSheetsGateway', () => {
     );
   });
 
-  it('allows deleting a character sheet', async () => {
+  it('allows deleting a char sheet', async () => {
     // Test data
     const firstCharSheetId = appTestHelper.charSheetsGateway.charSheets[0].id;
 
@@ -88,7 +88,7 @@ describe('CharacterSheetsGateway', () => {
 
   it('loads existing data from storage', async () => {
     // Test data
-    const dbCharSheets: CharacterSheetDto[] = [
+    const dbCharSheets: CharSheetDto[] = [
       {
         id: '1',
         name: 'name',

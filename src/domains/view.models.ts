@@ -1,17 +1,17 @@
-import { CharacterSheet } from '~domains/data.models';
+import { CharSheet } from '~domains/data.models';
 
-export type CharacterSheetListItemVM = {
+export type CharSheetListItemVM = {
   id: string;
   name: string;
   class: string;
 };
 
-export function getCharacterSheetListItemVM(
-  characterSheet: CharacterSheet,
-): CharacterSheetListItemVM {
+export function getCharSheetListItemVM(
+  charSheet: CharSheet,
+): CharSheetListItemVM {
   return {
-    id: characterSheet.id,
-    name: characterSheet.name,
-    class: characterSheet.class,
+    id: charSheet.id,
+    name: charSheet.name,
+    class: charSheet.class,
   };
 }

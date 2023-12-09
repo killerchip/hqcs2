@@ -1,7 +1,7 @@
 import { BaseIOC } from './BaseIOC';
 import { Injectables } from './injectables';
 
-import { AsyncStorage } from '~gateways/CharacterSheetsGateway';
+import { AsyncStorage } from '~gateways/CharSheetsGateway';
 import { getMockAsyncStorage } from '~testHelpers/MockAsyncStorage';
 import { getMockRouter } from '~testHelpers/MockRouter';
 import { getMockUuid } from '~testHelpers/mockUuid';

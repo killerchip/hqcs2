@@ -1,13 +1,9 @@
 import { inject, injectable } from 'inversify';
 
-import {
-  CharacterSheetDto,
-  isNewCharSheetDto,
-  NewCharacterSheetDto,
-} from './dto.models';
+import { CharSheetDto, isNewCharSheetDto, NewCharSheetDto } from './dto.models';
 
 import { config } from '~config/config';
-import { getFactoryDefaultCharacterSheets } from '~config/factoryDefaults';
+import { getFactoryDefaultCharSheets } from '~config/factoryDefaults';
 import { Injectables } from '~config/ioc/injectables';
 
 export type AsyncStorage = {
@@ -16,26 +12,24 @@ export type AsyncStorage = {
 };
 
 export type ICharSheetsGateway = {
-  loadInitialData: () => Promise<CharacterSheetDto[] | undefined>;
-  setList: (charSheets: CharacterSheetDto[]) => void;
-  setItem: (
-    charSheet: NewCharacterSheetDto | CharacterSheetDto,
-  ) => Promise<CharacterSheetDto>;
+  loadInitialData: () => Promise<CharSheetDto[] | undefined>;
+  setList: (charSheets: CharSheetDto[]) => void;
+  setItem: (charSheet: NewCharSheetDto | CharSheetDto) => Promise<CharSheetDto>;
   deleteItem: (id: string) => Promise<void>;
 };
 
 @injectable()
 export class CharSheetsGateway implements ICharSheetsGateway {
-  charSheets: CharacterSheetDto[] = [];
+  charSheets: CharSheetDto[] = [];
   constructor(
     @inject(Injectables.AsyncStorage) private localStorage: AsyncStorage,
     @inject(Injectables.GetUuid) private getUuid: () => string,
   ) {}
 
-  loadInitialData = async (): Promise<CharacterSheetDto[]> => {
+  loadInitialData = async (): Promise<CharSheetDto[]> => {
     const charSheets = await this.load();
     if (!charSheets) {
-      this.setList(getFactoryDefaultCharacterSheets(this.getUuid));
+      this.setList(getFactoryDefaultCharSheets(this.getUuid));
       await this.save();
     } else {
       this.setList(charSheets);
@@ -44,11 +38,11 @@ export class CharSheetsGateway implements ICharSheetsGateway {
     return this.charSheets;
   };
 
-  setList = (charSheets: CharacterSheetDto[]) => {
+  setList = (charSheets: CharSheetDto[]) => {
     this.charSheets = charSheets;
   };
 
-  load = async (): Promise<CharacterSheetDto[] | null> => {
+  load = async (): Promise<CharSheetDto[] | null> => {
     const json = await this.localStorage.getItem(
       `${config.storageKey}_charSheets`,
     );
@@ -60,17 +54,17 @@ export class CharSheetsGateway implements ICharSheetsGateway {
   };
 
   setItem = async (
-    charSheet: NewCharacterSheetDto | CharacterSheetDto,
-  ): Promise<CharacterSheetDto> => {
+    charSheet: NewCharSheetDto | CharSheetDto,
+  ): Promise<CharSheetDto> => {
     if (isNewCharSheetDto(charSheet)) {
-      const newSheet: CharacterSheetDto = { ...charSheet, id: this.getUuid() };
+      const newSheet: CharSheetDto = { ...charSheet, id: this.getUuid() };
       this.charSheets.push(newSheet);
       await this.save();
       return newSheet;
     }
 
     const index = this.charSheets.findIndex(
-      (item) => item.id === (charSheet as CharacterSheetDto).id,
+      (item) => item.id === (charSheet as CharSheetDto).id,
     );
     if (index === -1) {
       this.charSheets.push(charSheet);
@@ -79,7 +73,7 @@ export class CharSheetsGateway implements ICharSheetsGateway {
     }
     await this.save();
 
-    return charSheet as CharacterSheetDto;
+    return charSheet as CharSheetDto;
   };
 
   deleteItem = async (id: string) => {

@@ -2,20 +2,20 @@ import { inject, injectable } from 'inversify';
 import { action, makeObservable, observable, runInAction } from 'mobx';
 
 import {
-  CharacterSheet,
+  CharSheet,
   isNewCharSheet,
-  NewCharacterSheet,
-  toCharacterSheet,
+  NewCharSheet,
+  toCharSheet,
 } from '../data.models';
 
 import {
   CharSheetsGateway,
   ICharSheetsGateway,
-} from '~gateways/CharacterSheetsGateway';
+} from '~gateways/CharSheetsGateway';
 
 @injectable()
-export class CharacterSheetsStore {
-  list: CharacterSheet[] = [];
+export class CharSheetsStore {
+  list: CharSheet[] = [];
 
   constructor(
     @inject(CharSheetsGateway) private charSheetsGateway: ICharSheetsGateway,
@@ -29,13 +29,13 @@ export class CharacterSheetsStore {
 
   async load() {
     const listDto = await this.charSheetsGateway.loadInitialData();
-    const list = listDto?.map(toCharacterSheet);
+    const list = listDto?.map(toCharSheet);
     runInAction(() => {
       this.list = list ?? [];
     });
   }
 
-  async updateItem(sheet: CharacterSheet | NewCharacterSheet) {
+  async updateItem(sheet: CharSheet | NewCharSheet) {
     if (isNewCharSheet(sheet)) {
       const createdSheet = await this.charSheetsGateway.setItem(sheet);
 
@@ -44,17 +44,17 @@ export class CharacterSheetsStore {
     }
 
     const itemIndex = this.list.findIndex(
-      (i) => i.id === (sheet as CharacterSheet).id,
+      (i) => i.id === (sheet as CharSheet).id,
     );
 
     if (itemIndex === -1) {
-      throw new Error('Character sheet for update not found');
+      throw new Error('Char sheet for update not found');
     }
 
     this.list[itemIndex] = await this.charSheetsGateway.setItem(sheet);
   }
 
-  async deleteItem(id: CharacterSheet['id']) {
+  async deleteItem(id: CharSheet['id']) {
     await this.charSheetsGateway.deleteItem(id);
     const index = this.list.findIndex((i) => i.id === id);
     if (index > -1) {

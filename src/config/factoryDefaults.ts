@@ -1,10 +1,10 @@
-import { CharacterSheetDto } from '~gateways/dto.models';
+import { CharSheetDto } from '~gateways/dto.models';
 
-let defaults: CharacterSheetDto[] | null = null;
+let defaults: CharSheetDto[] | null = null;
 
-export function getFactoryDefaultCharacterSheets(
+export function getFactoryDefaultCharSheets(
   uuidGenerator: () => string,
-): CharacterSheetDto[] {
+): CharSheetDto[] {
   if (defaults) {
     return defaults;
   }

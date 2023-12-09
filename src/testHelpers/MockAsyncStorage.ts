@@ -1,4 +1,4 @@
-import { AsyncStorage } from '~gateways/CharacterSheetsGateway';
+import { AsyncStorage } from '~gateways/CharSheetsGateway';
 
 export class MockAsyncStorage implements AsyncStorage {
   setItem = jest.fn();
