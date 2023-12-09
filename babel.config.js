@@ -17,6 +17,7 @@ module.exports = function (api) {
             '~domains': './src/domains',
             '~gateways': './src/gateways',
             '~testHelpers': './src/testHelpers',
+            '~react': './src/react',
           },
         },
       ],
