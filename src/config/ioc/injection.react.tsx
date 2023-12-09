@@ -48,21 +48,24 @@ export function withInjections<
   return (
     Component: ComponentType<PropsWithChildren<ChildProps & InjectedProps>>,
   ) => {
-    return memo((props: PropsWithChildren<ChildProps & InjectedProps>) => {
+    return memo((props: PropsWithChildren<ChildProps>) => {
       const { container } = useContext(InversifyContext);
       if (!container) {
         throw new Error('Could not find container');
       }
 
-      const finalProps: PropsWithChildren<ChildProps & InjectedProps> = {
-        ...props,
-      };
+      const finalProps: PropsWithChildren<ChildProps & Partial<InjectedProps>> =
+        { ...props };
       for (const [key, value] of Object.entries(identifiers)) {
         finalProps[key as keyof PropsWithChildren<ChildProps & InjectedProps>] =
           container.get(value) as any;
       }
 
-      return <Component {...finalProps} />;
+      return (
+        <Component
+          {...(finalProps as PropsWithChildren<ChildProps & InjectedProps>)}
+        />
+      );
     });
   };
 }
