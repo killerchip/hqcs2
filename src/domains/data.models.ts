@@ -1,14 +1,14 @@
-import { CharacterSheetDto, NewCharacterSheetDto } from '~gateways/dto.models';
+import { CharSheetDto, NewCharSheetDto } from '~gateways/dto.models';
 
-export type CharacterSheet = CharacterSheetDto;
-export type NewCharacterSheet = Omit<CharacterSheet, 'id'>;
+export type CharSheet = CharSheetDto;
+export type NewCharSheet = Omit<CharSheet, 'id'>;
 
 export function isNewCharSheet(
-  charSheet: NewCharacterSheetDto | CharacterSheetDto,
-): charSheet is NewCharacterSheetDto {
-  return (charSheet as CharacterSheetDto).id === undefined;
+  charSheet: NewCharSheetDto | CharSheetDto,
+): charSheet is NewCharSheetDto {
+  return (charSheet as CharSheetDto).id === undefined;
 }
 
-export function toCharacterSheet(dto: CharacterSheetDto): CharacterSheet {
-  return dto as CharacterSheet;
+export function toCharSheet(dto: CharSheetDto): CharSheet {
+  return dto as CharSheet;
 }

@@ -35,8 +35,8 @@ export const InjectionProvider = ({
  * A higher-order component that injects dependencies into the wrapped component.
  */
 // An object param where we map props to the injection identifiers.
-// E.g. passing { presenter: CharacterSheetsListScreenPresenter } will inject
-// the CharacterSheetsListScreenPresenter into the "presenter" prop of the wrapped Component
+// E.g. passing { presenter: CharSheetsListScreenPresenter } will inject
+// the CharSheetsListScreenPresenter into the "presenter" prop of the wrapped Component
 type Identifiers = Record<string, interfaces.ServiceIdentifier>;
 
 export function withInjections<

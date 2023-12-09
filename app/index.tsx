@@ -1,3 +1,3 @@
-import { CharSheetListScreen } from '~react/screens/CharSheetListScreen/CharSheetListScreen';
+import { CharSheetsListScreen } from '~react/screens/CharSheetsListScreen/CharSheetsListScreen';
 
-export default CharSheetListScreen;
+export default CharSheetsListScreen;

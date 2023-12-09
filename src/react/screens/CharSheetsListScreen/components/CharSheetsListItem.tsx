@@ -1,13 +1,13 @@
 import React from 'react';
 import { Text, StyleSheet, Pressable, View } from 'react-native';
 
-import { CharacterSheetListItemVM } from '~domains/view.models';
+import { CharSheetListItemVM } from '~domains/view.models';
 
 type Props = {
-  charSheet: CharacterSheetListItemVM;
+  charSheet: CharSheetListItemVM;
   onPress?: () => void;
 };
-export function CharSheetListItem({ charSheet, onPress }: Props) {
+export function CharSheetsListItem({ charSheet, onPress }: Props) {
   return (
     <Pressable onPress={onPress}>
       <View style={styles.wrapper}>

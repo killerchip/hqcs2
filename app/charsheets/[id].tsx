@@ -1,7 +1,7 @@
 import { Stack, useLocalSearchParams } from 'expo-router';
 import { Text } from 'react-native';
 
-export default function CharacterSheetPage() {
+export default function CharSheetPage() {
   const params = useLocalSearchParams<{ id: string }>();
 
   return (
