@@ -50,7 +50,7 @@ describe('CharacterSheetsListScreenPresenter', () => {
 
   it('should serve viewModel of the list', async () => {
     await characterSheetsListScreenPresenter.load();
-    expect(characterSheetsListScreenPresenter.viewModel).toStrictEqual(
+    expect(characterSheetsListScreenPresenter.charSheetList).toStrictEqual(
       defaultCharacterSheets.map(getCharacterSheetListItemVM),
     );
   });
@@ -60,7 +60,7 @@ describe('CharacterSheetsListScreenPresenter', () => {
     characterSheetsListScreenPresenter.load().then();
     expect(characterSheetsListScreenPresenter.loading).toBe(true);
     await when(() => !characterSheetsListScreenPresenter.loading);
-    expect(characterSheetsListScreenPresenter.viewModel).toStrictEqual(
+    expect(characterSheetsListScreenPresenter.charSheetList).toStrictEqual(
       defaultCharacterSheets.map(getCharacterSheetListItemVM),
     );
   });
@@ -73,6 +73,6 @@ describe('CharacterSheetsListScreenPresenter', () => {
     expect(characterSheetsListScreenPresenter.loading).toBe(false);
     await expect(characterSheetsListScreenPresenter.load()).rejects.toThrow();
     expect(characterSheetsListScreenPresenter.loading).toBe(false);
-    expect(characterSheetsListScreenPresenter.viewModel).toStrictEqual([]);
+    expect(characterSheetsListScreenPresenter.charSheetList).toStrictEqual([]);
   });
 });
