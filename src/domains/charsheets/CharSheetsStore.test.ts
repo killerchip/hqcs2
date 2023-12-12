@@ -157,4 +157,16 @@ describe('CharSheetsStore', () => {
     expect(charSheetsStore!.list.length).toBe(1);
     expect(deletedItem).toBeUndefined();
   });
+
+  it('leaves the list as is if item to delete is not found', async () => {
+    // Test data
+    const idToDelete = getMockUuid();
+
+    // Test
+    await charSheetsStore!.deleteItem(idToDelete);
+
+    // Assert
+    expect(mockCharSheetsGateway?.deleteItem).toHaveBeenCalledWith(idToDelete);
+    expect(charSheetsStore!.list.length).toBe(2);
+  });
 });
