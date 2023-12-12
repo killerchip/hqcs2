@@ -24,22 +24,12 @@ describe('CharSheetsStore', () => {
   // The class under test
   let charSheetsStore: CharSheetsStore;
 
-  beforeEach(async () => {
-    // Setup base container
+  const setup = async (mockGw: ICharSheetsGateway) => {
     appTestHelper = new AppTestHelper();
     ({ container, factoryDefaultsSheets } = appTestHelper);
 
     // Create mocks/spies dependencies
-    mockCharSheetsGateway = {
-      loadInitialData: jest
-        .fn()
-        .mockReturnValue(
-          Promise.resolve(getFactoryDefaultCharSheets(getMockUuid)),
-        ),
-      setList: jest.fn(),
-      setItem: jest.fn(),
-      deleteItem: jest.fn(),
-    };
+    mockCharSheetsGateway = mockGw;
 
     // Bind mocks/spies to container
     container?.unbind(CharSheetsGateway);
@@ -52,6 +42,20 @@ describe('CharSheetsStore', () => {
 
     // Prepare the instance for testing
     await charSheetsStore?.load();
+  };
+
+  beforeEach(async () => {
+    // Setup base container
+    await setup({
+      loadInitialData: jest
+        .fn()
+        .mockReturnValue(
+          Promise.resolve(getFactoryDefaultCharSheets(getMockUuid)),
+        ),
+      setList: jest.fn(),
+      setItem: jest.fn(),
+      deleteItem: jest.fn(),
+    });
   });
 
   afterEach(() => {
@@ -70,6 +74,20 @@ describe('CharSheetsStore', () => {
     expect(charSheetsStore!.list).toStrictEqual(factoryDefaultsSheets);
   });
 
+  it('loads initial data and stores empty array if not found', async () => {
+    appTestHelper.reset();
+
+    await setup({
+      loadInitialData: jest.fn().mockReturnValue(Promise.resolve(null)),
+      setList: jest.fn(),
+      setItem: jest.fn(),
+      deleteItem: jest.fn(),
+    });
+
+    expect(mockCharSheetsGateway?.loadInitialData).toHaveBeenCalled();
+    expect(charSheetsStore!.list).toStrictEqual([]);
+  });
+
   it('updates an item', async () => {
     // Test Data
     const newItem = { ...charSheetsStore!.list[1], name: 'Gimli' };
@@ -85,6 +103,15 @@ describe('CharSheetsStore', () => {
     // Assert
     expect(mockCharSheetsGateway?.setItem).toHaveBeenCalledWith(newItem);
     expect(charSheetsStore!.list[1]).toStrictEqual(newItem);
+  });
+
+  it('throws an error if item to update is not found', async () => {
+    // Test data
+    const newItem = { ...charSheetsStore!.list[1], name: 'Gimli' };
+    newItem.id = getMockUuid();
+
+    // Test and assert
+    await expect(charSheetsStore!.updateItem(newItem)).rejects.toThrow();
   });
 
   it('creates and stores a new item', async () => {
@@ -129,14 +156,5 @@ describe('CharSheetsStore', () => {
     expect(mockCharSheetsGateway?.deleteItem).toHaveBeenCalledWith(idToDelete);
     expect(charSheetsStore!.list.length).toBe(1);
     expect(deletedItem).toBeUndefined();
-  });
-
-  it('throws an error if item to update is not found', async () => {
-    // Test data
-    const newItem = { ...charSheetsStore!.list[1], name: 'Gimli' };
-    newItem.id = getMockUuid();
-
-    // Test and assert
-    await expect(charSheetsStore!.updateItem(newItem)).rejects.toThrow();
   });
 });

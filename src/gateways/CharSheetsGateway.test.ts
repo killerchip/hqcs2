@@ -4,6 +4,7 @@ import { CharSheetDto, NewCharSheetDto } from './dto.models';
 
 import { config } from '~config/config';
 import { AppTestHelper } from '~testHelpers/AppTestHelper';
+import { getMockUuid } from '~testHelpers/mockUuid';
 
 /** Typical Unit test for a class, that uses different dependencies, in test environment we can mock them.
  * */
@@ -116,6 +117,31 @@ describe('CharSheetsGateway', () => {
     // Assert
     expect(appTestHelper.charSheetsGateway.charSheets).toStrictEqual(
       dbCharSheets,
+    );
+  });
+
+  it('adds a new item if id not found', async () => {
+    const newCharSheet: CharSheetDto = {
+      name: 'new name',
+      class: 'new class',
+      move: 1,
+      attack: 2,
+      defense: 3,
+      bodyPoints: 4,
+      mindPoints: 5,
+      id: getMockUuid(),
+    };
+
+    await appTestHelper.charSheetsGateway.setItem(newCharSheet);
+    expect(appTestHelper.charSheetsGateway.charSheets[2]).toStrictEqual(
+      newCharSheet,
+    );
+  });
+
+  it('does nothing if the item to delete not found', async () => {
+    await appTestHelper.charSheetsGateway.deleteItem(getMockUuid());
+    expect(appTestHelper.charSheetsGateway.charSheets).toStrictEqual(
+      appTestHelper.factoryDefaultsSheets,
     );
   });
 });
