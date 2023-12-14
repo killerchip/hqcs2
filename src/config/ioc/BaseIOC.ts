@@ -1,5 +1,6 @@
 import { Container } from 'inversify';
 
+import { RoutingService } from '~domains/shared/RoutingService/RoutingService';
 import { CharSheetsGateway } from '~gateways/CharSheetsGateway';
 
 export class BaseIOC {
@@ -13,10 +14,8 @@ export class BaseIOC {
   }
 
   buildBaseTemplate = () => {
-    this.container
-      .bind(CharSheetsGateway)
-      .to(CharSheetsGateway)
-      .inSingletonScope();
+    this.container.bind(CharSheetsGateway).toSelf().inSingletonScope();
+    this.container.bind(RoutingService).toSelf().inSingletonScope();
 
     // Add your singleton bindings here
     return this.container;
