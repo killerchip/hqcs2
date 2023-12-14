@@ -3,6 +3,7 @@
 import 'reflect-metadata';
 import { Stack } from 'expo-router';
 import { configure } from 'mobx';
+import { RootSiblingParent } from 'react-native-root-siblings';
 
 import { container } from '~config/ioc/AppIOC';
 import { InjectionProvider } from '~config/ioc/injection.react';
@@ -16,7 +17,9 @@ configure({
 export default function HomeLayout() {
   return (
     <InjectionProvider container={container}>
-      <Stack />
+      <RootSiblingParent>
+        <Stack />
+      </RootSiblingParent>
     </InjectionProvider>
   );
 }
