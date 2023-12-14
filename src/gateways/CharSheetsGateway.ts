@@ -5,6 +5,7 @@ import { CharSheetDto, isNewCharSheetDto, NewCharSheetDto } from './dto.models';
 import { config } from '~config/config';
 import { getFactoryDefaultCharSheets } from '~config/factoryDefaults';
 import { Injectables } from '~config/ioc/injectables';
+import { AlertingService } from '~domains/shared/AlertingService/AlertingService';
 
 export type AsyncStorage = {
   setItem: (key: string, value: string) => Promise<void>;
@@ -24,6 +25,7 @@ export class CharSheetsGateway implements ICharSheetsGateway {
   constructor(
     @inject(Injectables.AsyncStorage) private localStorage: AsyncStorage,
     @inject(Injectables.GetUuid) private getUuid: () => string,
+    @inject(AlertingService) private alertingService: AlertingService,
   ) {}
 
   loadInitialData = async (): Promise<CharSheetDto[]> => {

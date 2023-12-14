@@ -8,6 +8,7 @@ import {
 import { getTestIOC } from '~config/ioc/TestIOC';
 import { Injectables } from '~config/ioc/injectables';
 import { CharSheetsListScreenPresenter } from '~domains/charsheets/CharSheetsListScreen/CharSheetsListScreenPresenter';
+import { IToast } from '~domains/shared/AlertingService/AlertingService';
 import { IRouter } from '~domains/shared/RoutingService/RoutingService';
 import { CharSheetsGateway } from '~gateways/CharSheetsGateway';
 
@@ -17,7 +18,9 @@ export class AppTestHelper {
   mockAsyncStorage = this.container.get<MockAsyncStorage>(
     Injectables.AsyncStorage,
   );
-  mockRouter = this.container.get<IRouter>(Injectables.Router);
+  // noinspection JSUnusedGlobalSymbols
+  mockRouter: IRouter = this.container.get<IRouter>(Injectables.Router);
+  mockToast = this.container.get<IToast>(Injectables.Toast);
 
   factoryDefaultsSheets = getFactoryDefaultCharSheets(getMockUuid);
   // noinspection JSUnusedGlobalSymbols

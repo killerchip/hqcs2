@@ -4,6 +4,7 @@ import { when } from 'mobx';
 
 import { CharSheetsListScreenPresenter } from '~domains/charsheets/CharSheetsListScreen/CharSheetsListScreenPresenter';
 import { CharSheet } from '~domains/data.models';
+import { IToast } from '~domains/shared/AlertingService/AlertingService';
 import { IRouter } from '~domains/shared/RoutingService/RoutingService';
 import { ROUTES } from '~domains/shared/RoutingService/routes';
 import { getCharSheetListItemVM } from '~domains/view.models';
@@ -18,6 +19,7 @@ describe('CharSheetsListScreenPresenter', () => {
   let mockAsyncStorage: MockAsyncStorage;
   let defaultCharSheets: CharSheet[];
   let mockRouter: IRouter;
+  let mockToast: IToast;
 
   beforeEach(() => {
     appTestHelper = new AppTestHelper();
@@ -27,6 +29,7 @@ describe('CharSheetsListScreenPresenter', () => {
       mockAsyncStorage,
       charSheetsListScreenPresenter,
       mockRouter,
+      mockToast,
     } = appTestHelper);
 
     // Setup mock AsyncStorage specific to this suite
@@ -75,7 +78,15 @@ describe('CharSheetsListScreenPresenter', () => {
       .mockRejectedValueOnce(new Error('Storage read error'));
 
     expect(charSheetsListScreenPresenter.loading).toBe(false);
-    await expect(charSheetsListScreenPresenter.load()).rejects.toThrow();
+    await charSheetsListScreenPresenter.load();
+    expect(mockToast.show).toHaveBeenCalledWith(
+      'Error: Error loading character sheets',
+      {
+        duration: mockToast.durations.SHORT,
+        backgroundColor: '#ff0000',
+        textColor: '#ffffff',
+      },
+    );
     expect(charSheetsListScreenPresenter.loading).toBe(false);
     expect(charSheetsListScreenPresenter.charSheetList).toStrictEqual([]);
   });
