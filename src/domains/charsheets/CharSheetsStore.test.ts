@@ -1,61 +1,43 @@
 import 'reflect-metadata';
-import { Container } from 'inversify';
 
 import { CharSheetsStore } from './CharSheetsStore';
 import { NewCharSheet } from '../data.models';
 
 import { getFactoryDefaultCharSheets } from '~config/factoryDefaults';
-import {
-  CharSheetsGateway,
-  ICharSheetsGateway,
-} from '~gateways/CharSheetsGateway';
+import { CharSheetsGateway } from '~gateways/CharSheetsGateway';
+import { CharSheetDto } from '~gateways/dto.models';
 import { AppTestHelper } from '~testHelpers/AppTestHelper';
 import { getMockUuid } from '~testHelpers/mockUuid';
 
 // This is a typical example for unit test of a store.
 describe('CharSheetsStore', () => {
   let appTestHelper: AppTestHelper;
-  let container: Container;
-
-  // Mocks/Spies
-  let mockCharSheetsGateway: ICharSheetsGateway;
-  let factoryDefaultsSheets: ReturnType<typeof getFactoryDefaultCharSheets>;
-
-  // The class under test
   let charSheetsStore: CharSheetsStore;
-
-  const setup = async (mockGw: ICharSheetsGateway) => {
-    appTestHelper = new AppTestHelper();
-    ({ container, factoryDefaultsSheets } = appTestHelper);
-
-    // Create mocks/spies dependencies
-    mockCharSheetsGateway = mockGw;
-
-    // Bind mocks/spies to container
-    container?.unbind(CharSheetsGateway);
-    container
-      .bind<ICharSheetsGateway>(CharSheetsGateway)
-      .toConstantValue(mockCharSheetsGateway);
-
-    // Create instance of class under test with mock/spies above
-    charSheetsStore = container.get(CharSheetsStore);
-
-    // Prepare the instance for testing
-    await charSheetsStore?.load();
-  };
+  let factoryDefaultsSheets: CharSheetDto[];
+  let mockCharSheetsGateway: CharSheetsGateway;
 
   beforeEach(async () => {
-    // Setup base container
-    await setup({
-      loadInitialData: jest
-        .fn()
-        .mockReturnValue(
-          Promise.resolve(getFactoryDefaultCharSheets(getMockUuid)),
-        ),
-      setList: jest.fn(),
-      setItem: jest.fn(),
-      deleteItem: jest.fn(),
-    });
+    appTestHelper = new AppTestHelper();
+    factoryDefaultsSheets = getFactoryDefaultCharSheets(getMockUuid);
+
+    // get an instance of private injection, so we can spy on it
+    mockCharSheetsGateway = appTestHelper.container.get(CharSheetsGateway);
+    mockCharSheetsGateway.loadInitialData = jest
+      .fn()
+      .mockReturnValue(Promise.resolve(factoryDefaultsSheets));
+    mockCharSheetsGateway.deleteItem = jest
+      .fn()
+      .mockReturnValue(Promise.resolve());
+
+    // unbind the normal gateway and bind the spied gateway
+    appTestHelper.container.unbind(CharSheetsGateway);
+    appTestHelper.container
+      .bind(CharSheetsGateway)
+      .toConstantValue(mockCharSheetsGateway);
+
+    // ask for a new instance of the store to test
+    charSheetsStore = appTestHelper.container.get(CharSheetsStore);
+    await charSheetsStore.load();
   });
 
   afterEach(() => {
@@ -70,19 +52,32 @@ describe('CharSheetsStore', () => {
 
   it('loads initial data from gateway and stores the result', async () => {
     // Assert directly the prepared class
-    expect(mockCharSheetsGateway?.loadInitialData).toHaveBeenCalled();
+    expect(mockCharSheetsGateway.loadInitialData).toHaveBeenCalledTimes(1);
     expect(charSheetsStore!.list).toStrictEqual(factoryDefaultsSheets);
   });
 
   it('loads initial data and stores empty array if not found', async () => {
     appTestHelper.reset();
 
-    await setup({
-      loadInitialData: jest.fn().mockReturnValue(Promise.resolve(null)),
-      setList: jest.fn(),
-      setItem: jest.fn(),
-      deleteItem: jest.fn(),
-    });
+    // repeat the before each but with custom loadInitialData Mock
+    appTestHelper = new AppTestHelper();
+    factoryDefaultsSheets = getFactoryDefaultCharSheets(getMockUuid);
+
+    // get an instance of private injection, so we can spy on it
+    mockCharSheetsGateway = appTestHelper.container.get(CharSheetsGateway);
+    mockCharSheetsGateway.loadInitialData = jest
+      .fn()
+      .mockReturnValue(Promise.resolve(null));
+
+    // unbind the normal gateway and bind the spied gateway
+    appTestHelper.container.unbind(CharSheetsGateway);
+    appTestHelper.container
+      .bind(CharSheetsGateway)
+      .toConstantValue(mockCharSheetsGateway);
+
+    // ask for a new instance of the store to test
+    charSheetsStore = appTestHelper.container.get(CharSheetsStore);
+    await charSheetsStore.load();
 
     expect(mockCharSheetsGateway?.loadInitialData).toHaveBeenCalled();
     expect(charSheetsStore!.list).toStrictEqual([]);

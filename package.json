@@ -11,7 +11,8 @@
     "pretty": "prettier --write .",
     "husky:prepare": "husky install",
     "pre-commit": "pretty-quick --staged",
-    "test": "jest"
+    "test": "jest --coverage",
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "1.18.2",
