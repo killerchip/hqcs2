@@ -3,15 +3,18 @@ import { observer } from 'mobx-react-lite';
 import { useEffect } from 'react';
 import { FlatList, ListRenderItem } from 'react-native';
 
-import { withInjections } from '~config/ioc/injection.react';
+import { createInjectableContext } from '~config/ioc/injection.react';
 import { CharSheetsListScreenPresenter } from '~domains/charsheets/CharSheetsListScreen/CharSheetsListScreenPresenter';
 import { CharSheetListItemVM } from '~domains/view.models';
 import { CharSheetsListItem } from '~react/screens/CharSheetsListScreen/components/CharSheetsListItem';
 
-type Props = {
-  presenter: CharSheetsListScreenPresenter;
-};
-function CharSheetListScreenComponent({ presenter }: Props) {
+export const {
+  HoC: CharSheetListPresenterHoC,
+  useHook: useCharSheetListPresenter,
+} = createInjectableContext<CharSheetsListScreenPresenter>();
+
+function CharSheetListScreenComponent() {
+  const presenter = useCharSheetListPresenter();
   useEffect(() => {
     presenter.load().then();
   }, []);
@@ -33,6 +36,7 @@ function CharSheetListScreenComponent({ presenter }: Props) {
     </>
   );
 }
-export const CharSheetsListScreen = withInjections<Props>({
-  presenter: CharSheetsListScreenPresenter,
-})(observer(CharSheetListScreenComponent));
+
+export const CharSheetsListScreen = CharSheetListPresenterHoC(
+  CharSheetsListScreenPresenter,
+)(observer(CharSheetListScreenComponent));

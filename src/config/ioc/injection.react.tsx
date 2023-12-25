@@ -1,11 +1,12 @@
 import { Container, interfaces } from 'inversify';
 import {
-  ComponentType,
   createContext,
+  FunctionComponent,
   memo,
   PropsWithChildren,
   ReactNode,
   useContext,
+  useState,
 } from 'react';
 
 /**
@@ -16,7 +17,7 @@ type InjectionProviderProps = {
   children: ReactNode;
 };
 
-const InversifyContext = createContext<{ container: Container | null }>({
+export const InversifyContext = createContext<{ container: Container | null }>({
   container: null,
 });
 
@@ -32,40 +33,53 @@ export const InjectionProvider = ({
 };
 
 /**
- * A higher-order component that injects dependencies into the wrapped component.
+ * This function will create a context that will be used to inject dependencies into components.
+ * It uses the InversifyContext to access the container.
+ * It returns a HoC to wrap your Screen or Component with the provider.
+ * It returns a hook to access the injected value.
  */
-// An object param where we map props to the injection identifiers.
-// E.g. passing { presenter: CharSheetsListScreenPresenter } will inject
-// the CharSheetsListScreenPresenter into the "presenter" prop of the wrapped Component
-type Identifiers = Record<string, interfaces.ServiceIdentifier>;
+export function createInjectableContext<
+  // The type of the injectable that will be served by the provider
+  InjectableType,
+  // The props of the wrapped component
+  ChildrenProps = object,
+>() {
+  // The Context that will be used to provide the injectable
+  const Context = createContext<InjectableType | null>(null);
 
-export function withInjections<
-  // The injections that are passed in as props
-  InjectedProps extends object = object,
-  // The child component props
-  ChildProps extends object = object,
->(identifiers: Identifiers) {
-  return (
-    Component: ComponentType<PropsWithChildren<ChildProps & InjectedProps>>,
-  ) => {
-    return memo((props: PropsWithChildren<ChildProps>) => {
-      const { container } = useContext(InversifyContext);
-      if (!container) {
-        throw new Error('Could not find container');
+  return {
+    Context,
+    // This hook can be used to access the current value of the Provider
+    useHook() {
+      const injectedValue = useContext(Context);
+      if (!injectedValue) {
+        throw new Error('Injected value from the provider was not provided');
       }
+      return injectedValue;
+    },
+    // This is the HoC Generator that will wrap the component with the provider
+    HoC<II extends InjectableType, CC extends ChildrenProps>(
+      injectable: interfaces.ServiceIdentifier<II>,
+    ) {
+      // Component: The component that will be wrapped
+      return (Component: FunctionComponent<PropsWithChildren<CC>>) => {
+        // We memoize the component to avoid re-rendering it. Props will be picked up automatically.
+        const MemoizedComponent = memo(Component);
 
-      const finalProps: PropsWithChildren<ChildProps & Partial<InjectedProps>> =
-        { ...props };
-      for (const [key, value] of Object.entries(identifiers)) {
-        finalProps[key as keyof PropsWithChildren<ChildProps & InjectedProps>] =
-          container.get(value) as any;
-      }
+        // The newly wrapped component
+        return function WrappedComponent(props: PropsWithChildren<CC>) {
+          const { container } = useContext(InversifyContext);
+          const [injectedValue] = useState<II>(() =>
+            container!.get(injectable),
+          );
 
-      return (
-        <Component
-          {...(finalProps as PropsWithChildren<ChildProps & InjectedProps>)}
-        />
-      );
-    });
+          return (
+            <Context.Provider value={injectedValue}>
+              <MemoizedComponent {...props} />
+            </Context.Provider>
+          );
+        };
+      };
+    },
   };
 }
