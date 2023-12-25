@@ -15,3 +15,9 @@ export function getCharSheetListItemVM(
     class: charSheet.class,
   };
 }
+
+export type CharSheetFormVM = CharSheet;
+
+export function getCharSheetFormVM(charSheet: CharSheet): CharSheet {
+  return charSheet;
+}

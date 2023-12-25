@@ -7,6 +7,7 @@ import {
   CharSheetScreenPresenterFactory,
 } from '~domains/charsheets/CharSheetScreen/CharSheetScreenPresenter';
 import { CharSheetsStore } from '~domains/charsheets/CharSheetsStore';
+import { getCharSheetFormVM } from '~domains/view.models';
 import { AppTestHelper } from '~testHelpers/AppTestHelper';
 
 const charSheetStoreLoadSpy = jest.spyOn(CharSheetsStore.prototype, 'load');
@@ -42,10 +43,10 @@ describe('CharSheetScreenPresenter', () => {
     );
   });
 
-  it('serves the corresponding charSheet', async () => {
+  it('serves the corresponding charSheet VM', async () => {
     await when(() => charSheetScreenPresenter.hydrated);
-    expect(charSheetScreenPresenter.charSheet).toStrictEqual(
-      appTestHelper.factoryDefaultsSheets[0],
+    expect(charSheetScreenPresenter.viewData).toStrictEqual(
+      getCharSheetFormVM(charSheetScreenPresenter.charSheet!),
     );
   });
 
@@ -55,7 +56,7 @@ describe('CharSheetScreenPresenter', () => {
         Injectables.CharSheetScreenPresenterFactory,
       )('id2');
     await when(() => presenter.hydrated);
-    expect(presenter.charSheet).toBeUndefined();
+    expect(presenter.viewData).toBeUndefined();
   });
 
   it('auto-triggers load if CharSheetStore not initialised', async () => {

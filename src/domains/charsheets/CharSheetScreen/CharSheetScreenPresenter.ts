@@ -4,6 +4,7 @@ import { action, computed, makeObservable } from 'mobx';
 import { Injectables } from '~config/ioc/injectables';
 import { CharSheetsStore } from '~domains/charsheets/CharSheetsStore';
 import { CharSheet } from '~domains/data.models';
+import { CharSheetFormVM, getCharSheetFormVM } from '~domains/view.models';
 
 @injectable()
 export class CharSheetScreenPresenter {
@@ -25,6 +26,10 @@ export class CharSheetScreenPresenter {
 
   get charSheet(): CharSheet | undefined {
     return this.charSheetsStore.list.find((i) => i.id === this.charSheetId);
+  }
+
+  get viewData(): CharSheetFormVM | undefined {
+    return this.charSheet && getCharSheetFormVM(this.charSheet);
   }
 
   @postConstruct() init() {
