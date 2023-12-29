@@ -2,6 +2,7 @@ import { useLocalSearchParams } from 'expo-router';
 import { Container, interfaces } from 'inversify';
 import { observer } from 'mobx-react-lite';
 import {
+  Context,
   createContext,
   FunctionComponent,
   memo,
@@ -52,13 +53,7 @@ export function createInjectableContext<
   return {
     Context,
     // This hook can be used to access the current value of the Provider
-    useHook() {
-      const injectedValue = useContext(Context);
-      if (!injectedValue) {
-        throw new Error('Injected value from the provider was not provided');
-      }
-      return injectedValue;
-    },
+    useHook: getUseHook(Context),
     // This is the HoC Generator that will wrap the component with the provider
     HoC<II extends InjectableType, CC extends ChildrenProps>(
       injectable: interfaces.ServiceIdentifier<II>,
@@ -86,8 +81,6 @@ export function createInjectableContext<
   };
 }
 
-// TODO: refactor: these two creator functions can share code
-
 /**
  * Creates a context that will be used to create and Provide a screen presenter.
  * It uses the InversifyContext to access the container.
@@ -112,13 +105,7 @@ export function createScreenPresenterContext<
   return {
     Context,
     // This hook can be used to access the current value of the Provider
-    useHook() {
-      const injectedValue = useContext(Context);
-      if (!injectedValue) {
-        throw new Error('Injected value from the provider was not provided');
-      }
-      return injectedValue;
-    },
+    useHook: getUseHook(Context),
     // This is the HoC Generator that will wrap the component with the provider
     HoC<
       II extends InjectableType,
@@ -150,5 +137,15 @@ export function createScreenPresenterContext<
         });
       };
     },
+  };
+}
+
+function getUseHook<ContextType>(context: Context<ContextType>) {
+  return function useHook() {
+    const injectedValue = useContext(context);
+    if (!injectedValue) {
+      throw new Error('Injected value from the provider was not provided');
+    }
+    return injectedValue;
   };
 }
