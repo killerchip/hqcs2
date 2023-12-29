@@ -1,37 +1,49 @@
-import { Stack, useLocalSearchParams } from 'expo-router';
+import { Stack } from 'expo-router';
 import { observer } from 'mobx-react-lite';
-import { useContext, useState } from 'react';
 import { Text } from 'react-native';
 
 import { Injectables } from '~config/ioc/injectables';
-import { InversifyContext } from '~config/ioc/injection.react';
+import { createScreenPresenterContext } from '~config/ioc/injection.react';
 import {
   CharSheetScreenPresenter,
   CharSheetScreenPresenterFactory,
 } from '~domains/charsheets/CharSheetScreen/CharSheetScreenPresenter';
 
-export const CharSheetScreen = observer(function CharSheetScreen() {
-  // TODO: strongly type params
-  const params = useLocalSearchParams<{ id: string }>() as { id: string };
-  const { container } = useContext(InversifyContext);
-  const [presenter] = useState<CharSheetScreenPresenter>(() =>
-    container!.get<CharSheetScreenPresenterFactory>(
-      Injectables.CharSheetScreenPresenterFactory,
-    )(params.id),
-  );
+export const CharSheetScreenComponent = observer(
+  function CharSheetScreenComponent() {
+    // TODO: strongly type params
+    const { viewData } = useCharSheetScreenPresenter();
 
-  // TODO: display something if presenter.viewData is undefined
-  // TODO: handle loading state
+    // TODO: display something if presenter.viewData is undefined
+    // TODO: handle loading state
 
-  return (
-    <>
-      <Stack.Screen
-        options={{
-          title: presenter.viewData?.name,
-          headerBackTitleVisible: false,
-        }}
-      />
-      <Text>{JSON.stringify(presenter.viewData)}</Text>
-    </>
-  );
-});
+    return (
+      <>
+        <Stack.Screen
+          options={{
+            title: viewData?.name,
+            headerBackTitleVisible: false,
+          }}
+        />
+        <Text>{JSON.stringify(viewData)}</Text>
+      </>
+    );
+  },
+);
+
+export const {
+  HoC: CharSheetScreenPresenterHoC,
+  useHook: useCharSheetScreenPresenter,
+} = createScreenPresenterContext<
+  CharSheetScreenPresenter,
+  object,
+  { id: string }
+>((params, container) =>
+  container.get<CharSheetScreenPresenterFactory>(
+    Injectables.CharSheetScreenPresenterFactory,
+  )(params.id),
+);
+
+export const CharSheetScreen = CharSheetScreenPresenterHoC()(
+  CharSheetScreenComponent,
+);
