@@ -1,6 +1,6 @@
 import { Stack } from 'expo-router';
 import { observer } from 'mobx-react-lite';
-import { Text } from 'react-native';
+import { Text, TextInput, StyleSheet } from 'react-native';
 
 import { Injectables } from '~config/ioc/injectables';
 import { createScreenPresenterContext } from '~config/ioc/injection.react';
@@ -26,7 +26,36 @@ export const CharSheetScreenComponent = observer(
             headerBackTitleVisible: false,
           }}
         />
-        <Text>{JSON.stringify(viewData)}</Text>
+        <Text>Name</Text>
+        <TextInput
+          style={styles.textInput}
+          value={viewData.name}
+          editable={false}
+        />
+        <Text>Class</Text>
+        <TextInput
+          style={styles.textInput}
+          value={viewData.class}
+          editable={false}
+        />
+        <Text>Movement</Text>
+        <TextInput
+          style={styles.textInput}
+          value={viewData.move.toString()}
+          editable={false}
+        />
+        <Text>Body Points</Text>
+        <TextInput
+          style={styles.textInput}
+          value={viewData.bodyPoints.toString()}
+          editable={false}
+        />
+        <Text>Mind Points</Text>
+        <TextInput
+          style={styles.textInput}
+          value={viewData.mindPoints.toString()}
+          editable={false}
+        />
       </>
     );
   },
@@ -48,3 +77,10 @@ export const {
 export const CharSheetScreen = CharSheetScreenPresenterHoC()(
   CharSheetScreenComponent,
 );
+
+const styles = StyleSheet.create({
+  textInput: {
+    backgroundColor: 'white',
+    marginBottom: 4,
+  },
+});
