@@ -19,7 +19,10 @@ export function getFactoryDefaultCharSheets(
       attack: 2,
       defense: 2,
       bodyPoints: 10,
+      currentBodyPoints: 10,
       mindPoints: 2,
+      weapons: ['Broadsword'],
+      armors: [],
     },
     {
       id: uuidGenerator(),
@@ -30,7 +33,10 @@ export function getFactoryDefaultCharSheets(
       attack: 2,
       defense: 2,
       bodyPoints: 7,
+      currentBodyPoints: 7,
       mindPoints: 3,
+      weapons: ['Shortsword'],
+      armors: [],
     },
   ];
 

@@ -1,6 +1,6 @@
 import { Stack } from 'expo-router';
 import { observer } from 'mobx-react-lite';
-import { Text, TextInput, StyleSheet } from 'react-native';
+import { Text, TextInput, StyleSheet, View } from 'react-native';
 
 import { Injectables } from '~config/ioc/injectables';
 import { createScreenPresenterContext } from '~config/ioc/injection.react';
@@ -17,6 +17,12 @@ function CharSheetScreenComponent() {
 
   if (!viewData) return null;
 
+  const weaponsString =
+    viewData.weapons.length === 0 ? 'None' : viewData.weapons.join(', ');
+
+  const armorsString =
+    viewData.armors.length === 0 ? 'None' : viewData.armors.join(', ');
+
   return (
     <>
       <Stack.Screen
@@ -25,49 +31,68 @@ function CharSheetScreenComponent() {
           headerBackTitleVisible: false,
         }}
       />
-      <Text>Name</Text>
-      <TextInput
-        style={styles.textInput}
-        value={viewData.name}
-        editable={false}
-      />
-      <Text>Class</Text>
-      <TextInput
-        style={styles.textInput}
-        value={viewData.class}
-        editable={false}
-      />
-      <Text>Movement</Text>
-      <TextInput
-        style={styles.textInput}
-        value={viewData.move.toString()}
-        editable={false}
-      />
-      <Text>Attack</Text>
-      <TextInput
-        style={styles.textInput}
-        value={viewData.attack.toString()}
-        editable={false}
-      />
-      <Text>Defense</Text>
-      <TextInput
-        style={styles.textInput}
-        value={viewData.defense.toString()}
-        editable={false}
-      />
-
-      <Text>Body Points</Text>
-      <TextInput
-        style={styles.textInput}
-        value={viewData.bodyPoints.toString()}
-        editable={false}
-      />
-      <Text>Mind Points</Text>
-      <TextInput
-        style={styles.textInput}
-        value={viewData.mindPoints.toString()}
-        editable={false}
-      />
+      <View style={styles.wrapper}>
+        <Text>Name</Text>
+        <TextInput
+          style={styles.textInput}
+          value={viewData.name}
+          editable={false}
+        />
+        <Text>Class</Text>
+        <TextInput
+          style={styles.textInput}
+          value={viewData.class}
+          editable={false}
+        />
+        <Text>Movement</Text>
+        <TextInput
+          style={styles.textInput}
+          value={`${viewData.move} ${viewData.moveTypeString}`}
+          editable={false}
+        />
+        <Text>Attack</Text>
+        <TextInput
+          style={styles.textInput}
+          value={viewData.attack.toString()}
+          editable={false}
+        />
+        <Text>Defense</Text>
+        <TextInput
+          style={styles.textInput}
+          value={viewData.defense.toString()}
+          editable={false}
+        />
+        <Text>Body Points</Text>
+        <TextInput
+          style={styles.textInput}
+          value={viewData.bodyPoints.toString()}
+          editable={false}
+        />
+        <Text>Mind Points</Text>
+        <TextInput
+          style={styles.textInput}
+          value={viewData.mindPoints.toString()}
+          editable={false}
+        />
+        <Text>Weapon</Text>
+        <TextInput
+          style={styles.textInput}
+          value={weaponsString}
+          editable={false}
+        />
+        <Text>Armor</Text>
+        <TextInput
+          style={styles.textInput}
+          value={armorsString}
+          editable={false}
+        />
+        <Text>Current Body Points</Text>
+        <TextInput
+          style={styles.textInput}
+          value={viewData.currentBodyPoints.toString()}
+          editable={false}
+        />
+      </View>
     </>
   );
 }
@@ -90,6 +115,9 @@ export const CharSheetScreen = CharSheetScreenPresenterHoC()(
 );
 
 const styles = StyleSheet.create({
+  wrapper: {
+    padding: 10,
+  },
   textInput: {
     backgroundColor: 'white',
     marginBottom: 10,
