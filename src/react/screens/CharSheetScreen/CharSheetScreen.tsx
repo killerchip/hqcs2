@@ -11,17 +11,18 @@ import {
 
 export const CharSheetScreenComponent = observer(
   function CharSheetScreenComponent() {
-    // TODO: strongly type params
     const { viewData } = useCharSheetScreenPresenter();
 
     // TODO: display something if presenter.viewData is undefined
     // TODO: handle loading state
 
+    if (!viewData) return null;
+
     return (
       <>
         <Stack.Screen
           options={{
-            title: viewData?.name,
+            title: viewData.name,
             headerBackTitleVisible: false,
           }}
         />
