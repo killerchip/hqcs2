@@ -2,6 +2,7 @@ export type NewCharSheetDto = {
   name: string;
   class: string;
   move: number;
+  moveType: 'dice' | 'squares';
   attack: number;
   defense: number;
   bodyPoints: number;

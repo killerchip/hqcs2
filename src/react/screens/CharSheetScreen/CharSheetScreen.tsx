@@ -9,57 +9,68 @@ import {
   CharSheetScreenPresenterFactory,
 } from '~domains/charsheets/CharSheetScreen/CharSheetScreenPresenter';
 
-export const CharSheetScreenComponent = observer(
-  function CharSheetScreenComponent() {
-    const { viewData } = useCharSheetScreenPresenter();
+function CharSheetScreenComponent() {
+  const { viewData } = useCharSheetScreenPresenter();
 
-    // TODO: display something if presenter.viewData is undefined
-    // TODO: handle loading state
+  // TODO: display something if presenter.viewData is undefined
+  // TODO: handle loading state
 
-    if (!viewData) return null;
+  if (!viewData) return null;
 
-    return (
-      <>
-        <Stack.Screen
-          options={{
-            title: viewData.name,
-            headerBackTitleVisible: false,
-          }}
-        />
-        <Text>Name</Text>
-        <TextInput
-          style={styles.textInput}
-          value={viewData.name}
-          editable={false}
-        />
-        <Text>Class</Text>
-        <TextInput
-          style={styles.textInput}
-          value={viewData.class}
-          editable={false}
-        />
-        <Text>Movement</Text>
-        <TextInput
-          style={styles.textInput}
-          value={viewData.move.toString()}
-          editable={false}
-        />
-        <Text>Body Points</Text>
-        <TextInput
-          style={styles.textInput}
-          value={viewData.bodyPoints.toString()}
-          editable={false}
-        />
-        <Text>Mind Points</Text>
-        <TextInput
-          style={styles.textInput}
-          value={viewData.mindPoints.toString()}
-          editable={false}
-        />
-      </>
-    );
-  },
-);
+  return (
+    <>
+      <Stack.Screen
+        options={{
+          title: viewData.name,
+          headerBackTitleVisible: false,
+        }}
+      />
+      <Text>Name</Text>
+      <TextInput
+        style={styles.textInput}
+        value={viewData.name}
+        editable={false}
+      />
+      <Text>Class</Text>
+      <TextInput
+        style={styles.textInput}
+        value={viewData.class}
+        editable={false}
+      />
+      <Text>Movement</Text>
+      <TextInput
+        style={styles.textInput}
+        value={viewData.move.toString()}
+        editable={false}
+      />
+      <Text>Attack</Text>
+      <TextInput
+        style={styles.textInput}
+        value={viewData.attack.toString()}
+        editable={false}
+      />
+      <Text>Defense</Text>
+      <TextInput
+        style={styles.textInput}
+        value={viewData.defense.toString()}
+        editable={false}
+      />
+
+      <Text>Body Points</Text>
+      <TextInput
+        style={styles.textInput}
+        value={viewData.bodyPoints.toString()}
+        editable={false}
+      />
+      <Text>Mind Points</Text>
+      <TextInput
+        style={styles.textInput}
+        value={viewData.mindPoints.toString()}
+        editable={false}
+      />
+    </>
+  );
+}
 
 export const {
   HoC: CharSheetScreenPresenterHoC,
@@ -75,12 +86,12 @@ export const {
 );
 
 export const CharSheetScreen = CharSheetScreenPresenterHoC()(
-  CharSheetScreenComponent,
+  observer(CharSheetScreenComponent),
 );
 
 const styles = StyleSheet.create({
   textInput: {
     backgroundColor: 'white',
-    marginBottom: 4,
+    marginBottom: 10,
   },
 });
