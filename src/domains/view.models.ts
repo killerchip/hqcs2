@@ -15,3 +15,18 @@ export function getCharSheetListItemVM(
     class: charSheet.class,
   };
 }
+
+export type CharSheetFormVM = CharSheet & { moveTypeString: string };
+
+export function getCharSheetFormVM(charSheet: CharSheet): CharSheetFormVM {
+  let moveTypeString: string = charSheet.moveType;
+  if (charSheet.moveType === 'dice' && charSheet.move === 1) {
+    moveTypeString = 'die';
+  }
+
+  if (charSheet.moveType === 'squares') {
+    moveTypeString = charSheet.move === 1 ? 'square' : 'squares';
+  }
+
+  return { ...charSheet, moveTypeString } as CharSheetFormVM;
+}

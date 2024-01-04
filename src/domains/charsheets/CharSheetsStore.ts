@@ -16,6 +16,8 @@ import {
 @injectable()
 export class CharSheetsStore {
   list: CharSheet[] = [];
+  hydrated = false;
+  loading = false;
 
   constructor(
     @inject(CharSheetsGateway) private charSheetsGateway: ICharSheetsGateway,
@@ -24,15 +26,25 @@ export class CharSheetsStore {
       list: observable,
       load: action,
       updateItem: action,
+      hydrated: observable,
+      loading: observable,
     });
   }
 
   async load() {
-    const listDto = await this.charSheetsGateway.loadInitialData();
-    const list = listDto?.map(toCharSheet);
-    runInAction(() => {
-      this.list = list ?? [];
-    });
+    this.loading = true;
+    try {
+      const listDto = await this.charSheetsGateway.loadInitialData();
+      const list = listDto?.map(toCharSheet);
+      runInAction(() => {
+        this.list = list ?? [];
+        this.hydrated = true;
+      });
+    } finally {
+      runInAction(() => {
+        this.loading = false;
+      });
+    }
   }
 
   async updateItem(sheet: CharSheet | NewCharSheet) {

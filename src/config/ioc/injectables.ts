@@ -3,4 +3,12 @@ export const Injectables = {
   GetUuid: Symbol.for('GetUuid'),
   Router: Symbol.for('Router'),
   Toast: Symbol.for('Toast'),
+
+  // Factories
+  CharSheetScreenPresenterFactory: Symbol.for(
+    'CharSheetScreenPresenterFactory',
+  ),
+  CharSheetScreenPresenterFactoryArgs: Symbol.for(
+    'CharSheetScreenPresenterFactoryArgs',
+  ),
 };

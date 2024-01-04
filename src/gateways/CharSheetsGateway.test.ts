@@ -52,6 +52,13 @@ describe('CharSheetsGateway', () => {
       defense: 3,
       bodyPoints: 4,
       mindPoints: 5,
+      moveType: 'dice',
+      currentBodyPoints: 4,
+      weapons: [],
+      armors: [],
+      gold: 0,
+      items: [],
+      spells: null,
     };
 
     // Test
@@ -80,10 +87,16 @@ describe('CharSheetsGateway', () => {
     await appTestHelper.charSheetsGateway.deleteItem(firstCharSheetId);
 
     // Assert
-    expect(appTestHelper.charSheetsGateway.charSheets.length).toBe(1);
+    expect(appTestHelper.charSheetsGateway.charSheets.length).toBe(3);
     expect(appTestHelper.mockAsyncStorage.setItem).toHaveBeenCalledWith(
       config.storageKey + '_charSheets',
-      JSON.stringify({ list: [appTestHelper.charSheetsGateway.charSheets[0]] }),
+      JSON.stringify({
+        list: [
+          appTestHelper.charSheetsGateway.charSheets[0],
+          appTestHelper.charSheetsGateway.charSheets[1],
+          appTestHelper.charSheetsGateway.charSheets[2],
+        ],
+      }),
     );
   });
 
@@ -95,10 +108,17 @@ describe('CharSheetsGateway', () => {
         name: 'name',
         class: 'class',
         move: 1,
+        moveType: 'dice',
         attack: 2,
         defense: 3,
         bodyPoints: 4,
+        currentBodyPoints: 4,
         mindPoints: 5,
+        weapons: [],
+        armors: [],
+        gold: 0,
+        items: [],
+        spells: null,
       },
     ];
 
@@ -125,15 +145,22 @@ describe('CharSheetsGateway', () => {
       name: 'new name',
       class: 'new class',
       move: 1,
+      moveType: 'dice',
       attack: 2,
       defense: 3,
       bodyPoints: 4,
       mindPoints: 5,
       id: getMockUuid(),
+      currentBodyPoints: 4,
+      weapons: [],
+      armors: [],
+      gold: 0,
+      items: [],
+      spells: null,
     };
 
     await appTestHelper.charSheetsGateway.setItem(newCharSheet);
-    expect(appTestHelper.charSheetsGateway.charSheets[2]).toStrictEqual(
+    expect(appTestHelper.charSheetsGateway.charSheets[4]).toStrictEqual(
       newCharSheet,
     );
   });
