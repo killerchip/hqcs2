@@ -10,6 +10,9 @@ export type NewCharSheetDto = {
   currentBodyPoints: number;
   weapons: string[];
   armors: string[];
+  gold: number;
+  items: string[];
+  spells: null | string[];
 };
 
 export type CharSheetDto = NewCharSheetDto & { id: string };

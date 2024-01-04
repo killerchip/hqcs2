@@ -23,6 +23,12 @@ function CharSheetScreenComponent() {
   const armorsString =
     viewData.armors.length === 0 ? 'None' : viewData.armors.join(', ');
 
+  const itemsString =
+    viewData.items.length === 0 ? 'None' : viewData.items.join(', ');
+
+  const spellsString =
+    viewData.spells?.length === 0 ? 'None' : viewData.spells?.join(', ');
+
   return (
     <>
       <Stack.Screen
@@ -92,6 +98,28 @@ function CharSheetScreenComponent() {
           value={viewData.currentBodyPoints.toString()}
           editable={false}
         />
+        <Text>Gold</Text>
+        <TextInput
+          style={styles.textInput}
+          value={viewData.gold.toString()}
+          editable={false}
+        />
+        <Text>Items</Text>
+        <TextInput
+          style={styles.textInput}
+          value={itemsString}
+          editable={false}
+        />
+        {viewData.spells && (
+          <>
+            <Text>Spells</Text>
+            <TextInput
+              style={styles.textInput}
+              value={spellsString}
+              editable={false}
+            />
+          </>
+        )}
       </View>
     </>
   );

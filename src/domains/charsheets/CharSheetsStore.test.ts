@@ -118,7 +118,14 @@ describe('CharSheetsStore', () => {
       attack: 2,
       defense: 3,
       bodyPoints: 4,
+      currentBodyPoints: 4,
       mindPoints: 5,
+      moveType: 'dice',
+      armors: [],
+      weapons: [],
+      gold: 0,
+      items: [],
+      spells: null,
     };
     const itemToCreate = { ...newCharSheet, id: getMockUuid() };
 
@@ -132,7 +139,7 @@ describe('CharSheetsStore', () => {
 
     // Assert
     expect(mockCharSheetsGateway?.setItem).toHaveBeenCalledWith(newCharSheet);
-    expect(charSheetsStore!.list[2]).toStrictEqual(itemToCreate);
+    expect(charSheetsStore!.list[4]).toStrictEqual(itemToCreate);
   });
 
   it('deletes an item', async () => {
@@ -149,7 +156,7 @@ describe('CharSheetsStore', () => {
 
     // Assert
     expect(mockCharSheetsGateway?.deleteItem).toHaveBeenCalledWith(idToDelete);
-    expect(charSheetsStore!.list.length).toBe(1);
+    expect(charSheetsStore!.list.length).toBe(3);
     expect(deletedItem).toBeUndefined();
   });
 
@@ -162,6 +169,6 @@ describe('CharSheetsStore', () => {
 
     // Assert
     expect(mockCharSheetsGateway?.deleteItem).toHaveBeenCalledWith(idToDelete);
-    expect(charSheetsStore!.list.length).toBe(2);
+    expect(charSheetsStore!.list.length).toBe(4);
   });
 });
