@@ -1,6 +1,6 @@
 import { Stack } from 'expo-router';
 import { observer } from 'mobx-react-lite';
-import { Text, TextInput, StyleSheet, View } from 'react-native';
+import { Text, TextInput, StyleSheet, ScrollView } from 'react-native';
 
 import { Injectables } from '~config/ioc/injectables';
 import { createScreenPresenterContext } from '~config/ioc/injection.react';
@@ -37,7 +37,7 @@ function CharSheetScreenComponent() {
           headerBackTitleVisible: false,
         }}
       />
-      <View style={styles.wrapper}>
+      <ScrollView style={styles.wrapper}>
         <Text>Name</Text>
         <TextInput
           style={styles.textInput}
@@ -120,7 +120,7 @@ function CharSheetScreenComponent() {
             />
           </>
         )}
-      </View>
+      </ScrollView>
     </>
   );
 }
