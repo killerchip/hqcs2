@@ -38,73 +38,73 @@ function CharSheetScreenComponent() {
         }}
       />
       <ScrollView style={styles.wrapper}>
-        <Text>Name</Text>
+        <Text style={styles.label}>Name</Text>
         <TextInput
           style={styles.textInput}
           value={viewData.name}
           editable={false}
         />
-        <Text>Class</Text>
+        <Text style={styles.label}>Class</Text>
         <TextInput
           style={styles.textInput}
           value={viewData.class}
           editable={false}
         />
-        <Text>Movement</Text>
+        <Text style={styles.label}>Movement</Text>
         <TextInput
           style={styles.textInput}
           value={`${viewData.move} ${viewData.moveTypeString}`}
           editable={false}
         />
-        <Text>Attack</Text>
+        <Text style={styles.label}>Attack</Text>
         <TextInput
           style={styles.textInput}
           value={viewData.attack.toString()}
           editable={false}
         />
-        <Text>Defense</Text>
+        <Text style={styles.label}>Defense</Text>
         <TextInput
           style={styles.textInput}
           value={viewData.defense.toString()}
           editable={false}
         />
-        <Text>Body Points</Text>
+        <Text style={styles.label}>Body Points</Text>
         <TextInput
           style={styles.textInput}
           value={viewData.bodyPoints.toString()}
           editable={false}
         />
-        <Text>Mind Points</Text>
+        <Text style={styles.label}>Mind Points</Text>
         <TextInput
           style={styles.textInput}
           value={viewData.mindPoints.toString()}
           editable={false}
         />
-        <Text>Weapon</Text>
+        <Text style={styles.label}>Weapon</Text>
         <TextInput
           style={styles.textInput}
           value={weaponsString}
           editable={false}
         />
-        <Text>Armor</Text>
+        <Text style={styles.label}>Armor</Text>
         <TextInput
           style={styles.textInput}
           value={armorsString}
           editable={false}
         />
-        <Text>Current Body Points</Text>
+        <Text style={styles.label}>Current Body Points</Text>
         <TextInput
           style={styles.textInput}
           value={viewData.currentBodyPoints.toString()}
           editable={false}
         />
-        <Text>Gold</Text>
+        <Text style={styles.label}>Gold</Text>
         <TextInput
           style={styles.textInput}
           value={viewData.gold.toString()}
           editable={false}
         />
-        <Text>Items</Text>
+        <Text style={styles.label}>Items</Text>
         <TextInput
           style={styles.textInput}
           value={itemsString}
@@ -112,7 +112,7 @@ function CharSheetScreenComponent() {
         />
         {viewData.spells && (
           <>
-            <Text>Spells</Text>
+            <Text style={styles.label}>Spells</Text>
             <TextInput
               style={styles.textInput}
               value={spellsString}
@@ -149,5 +149,10 @@ const styles = StyleSheet.create({
   textInput: {
     backgroundColor: 'white',
     marginBottom: 10,
+    fontFamily: 'texturina',
+    fontWeight: '700',
+  },
+  label: {
+    fontFamily: 'antiqua400',
   },
 });
