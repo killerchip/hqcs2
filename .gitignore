@@ -8,6 +8,15 @@ node_modules/
 dist/
 web-build/
 
+# yarn
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
 # Native
 *.orig.*
 *.jks
@@ -43,3 +52,6 @@ coverage
 
 expo-env.d.ts
 # @end expo-cli
+
+ios
+android
