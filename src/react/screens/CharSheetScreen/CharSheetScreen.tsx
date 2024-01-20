@@ -8,6 +8,7 @@ import {
   CharSheetScreenPresenter,
   CharSheetScreenPresenterFactory,
 } from '~domains/charsheets/CharSheetScreen/CharSheetScreenPresenter';
+import { Caudex, texturina } from '~react/common-styles';
 
 function CharSheetScreenComponent() {
   const { viewData } = useCharSheetScreenPresenter();
@@ -149,10 +150,9 @@ const styles = StyleSheet.create({
   textInput: {
     backgroundColor: 'white',
     marginBottom: 10,
-    fontFamily: 'texturina',
-    fontWeight: '700',
+    fontFamily: Caudex.Regular,
   },
   label: {
-    fontFamily: 'antiqua400',
+    fontFamily: Caudex.Regular,
   },
 });

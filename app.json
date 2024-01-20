@@ -36,15 +36,26 @@
         {
           "fonts": [
             "assets/fonts/antiqua400.ttf",
-            "assets/fonts/texturina.ttf",
-            "assets/fonts/texturina-italic.ttf",
-            "assets/fonts/caesar400.ttf"
+            "assets/fonts/caesar400.ttf",
+            "node_modules/@expo-google-fonts/caudex/Caudex_400Regular.ttf",
+            "node_modules/@expo-google-fonts/caudex/Caudex_400Regular_Italic.ttf",
+            "node_modules/@expo-google-fonts/caudex/Caudex_700Bold.ttf",
+            "node_modules/@expo-google-fonts/caudex/Caudex_700Bold_Italic.ttf"
           ]
         }
       ]
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "8ecb178e-799c-4cc3-bea8-3566eba95b4f"
+      }
+    },
+    "owner": "killerchip"
   }
 }
