@@ -6600,6 +6600,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"expo-image@npm:^1.10.4":
+  version: 1.10.4
+  resolution: "expo-image@npm:1.10.4"
+  dependencies:
+    "@react-native/assets-registry": "npm:~0.73.1"
+  peerDependencies:
+    expo: "*"
+  checksum: 44046caf95871d8b9c86a20bf5fe82a556993a32f9194b9b84c9e1fec1c86d94eef7bea03b7809f926d7ea30274453550b1d8f2a7352704303d4590418085e78
+  languageName: node
+  linkType: hard
+
 "expo-json-utils@npm:~0.12.0":
   version: 0.12.2
   resolution: "expo-json-utils@npm:0.12.2"
@@ -7564,6 +7575,7 @@ __metadata:
     expo-crypto: "npm:~12.8.0"
     expo-dev-client: "npm:~3.3.6"
     expo-font: "npm:~11.10.2"
+    expo-image: "npm:^1.10.4"
     expo-linking: "npm:~6.2.2"
     expo-router: "npm:~3.4.4"
     expo-status-bar: "npm:~1.11.1"

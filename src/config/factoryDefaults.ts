@@ -12,6 +12,7 @@ export function getFactoryDefaultCharSheets(
   defaults = [
     {
       id: uuidGenerator(),
+      image: 'BarbarianMale',
       name: 'Yagonan',
       class: 'Barbarian',
       move: 2,
@@ -29,6 +30,7 @@ export function getFactoryDefaultCharSheets(
     },
     {
       id: uuidGenerator(),
+      image: 'ElfFemale',
       name: 'Legolily',
       class: 'Elf',
       move: 2,
@@ -46,6 +48,7 @@ export function getFactoryDefaultCharSheets(
     },
     {
       id: uuidGenerator(),
+      image: 'DwarfMale',
       name: 'Thorlin',
       class: 'Dwarf',
       move: 2,
@@ -63,6 +66,7 @@ export function getFactoryDefaultCharSheets(
     },
     {
       id: uuidGenerator(),
+      image: 'WizardMale',
       name: 'Sarumon',
       class: 'Wizard',
       move: 2,

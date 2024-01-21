@@ -4,6 +4,7 @@ export type CharSheetListItemVM = {
   id: string;
   name: string;
   class: string;
+  image?: CharSheet['image'];
 };
 
 export function getCharSheetListItemVM(
@@ -13,6 +14,7 @@ export function getCharSheetListItemVM(
     id: charSheet.id,
     name: charSheet.name,
     class: charSheet.class,
+    image: charSheet.image,
   };
 }
 
