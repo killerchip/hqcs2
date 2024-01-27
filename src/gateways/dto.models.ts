@@ -1,3 +1,5 @@
+import { CharSheet } from '~domains/data.models';
+
 export type NewCharSheetDto = {
   image?: ContentImage;
   name: string;
@@ -29,3 +31,5 @@ export type ContentImage =
   | 'ElfFemale'
   | 'DwarfMale'
   | 'WizardMale';
+
+export type CharSheetTemplateDto = CharSheetDto;
