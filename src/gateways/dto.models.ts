@@ -1,4 +1,5 @@
 export type NewCharSheetDto = {
+  image?: ContentImage;
   name: string;
   class: string;
   move: number;
@@ -22,3 +23,9 @@ export function isNewCharSheetDto(
 ): charSheet is NewCharSheetDto {
   return (charSheet as CharSheetDto).id === undefined;
 }
+
+export type ContentImage =
+  | 'BarbarianMale'
+  | 'ElfFemale'
+  | 'DwarfMale'
+  | 'WizardMale';

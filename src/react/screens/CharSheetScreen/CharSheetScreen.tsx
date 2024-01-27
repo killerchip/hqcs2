@@ -1,6 +1,7 @@
+import { Image } from 'expo-image';
 import { Stack } from 'expo-router';
 import { observer } from 'mobx-react-lite';
-import { Text, TextInput, StyleSheet, ScrollView } from 'react-native';
+import { Text, TextInput, StyleSheet, ScrollView, View } from 'react-native';
 
 import { Injectables } from '~config/ioc/injectables';
 import { createScreenPresenterContext } from '~config/ioc/injection.react';
@@ -9,6 +10,8 @@ import {
   CharSheetScreenPresenterFactory,
 } from '~domains/charsheets/CharSheetScreen/CharSheetScreenPresenter';
 import { Caudex, Texturina } from '~react/common-styles';
+import { Images } from '~react/images';
+import { blurhash } from '~react/screens/CharSheetsListScreen/components/Blurhash';
 
 function CharSheetScreenComponent() {
   const { viewData } = useCharSheetScreenPresenter();
@@ -39,18 +42,27 @@ function CharSheetScreenComponent() {
         }}
       />
       <ScrollView style={styles.wrapper}>
-        <Text style={styles.label}>Name</Text>
-        <TextInput
-          style={styles.textInput}
-          value={viewData.name}
-          editable={false}
-        />
-        <Text style={styles.label}>Class</Text>
-        <TextInput
-          style={styles.textInput}
-          value={viewData.class}
-          editable={false}
-        />
+        <View style={styles.headline}>
+          <Image
+            source={viewData.image ? Images[viewData.image] : undefined}
+            style={styles.imageStyle}
+            placeholder={blurhash}
+          />
+          <View style={styles.textPart}>
+            <Text style={styles.label}>Name</Text>
+            <TextInput
+              style={styles.textInput}
+              value={viewData.name}
+              editable={false}
+            />
+            <Text style={styles.label}>Class</Text>
+            <TextInput
+              style={styles.textInput}
+              value={viewData.class}
+              editable={false}
+            />
+          </View>
+        </View>
         <Text style={styles.label}>Movement</Text>
         <TextInput
           style={styles.textInput}
@@ -147,12 +159,21 @@ const styles = StyleSheet.create({
   wrapper: {
     padding: 10,
   },
+  headline: {
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  textPart: {
+    marginLeft: 8,
+    flex: 1,
+  },
   textInput: {
     backgroundColor: 'white',
     marginBottom: 10,
     fontFamily: Texturina.Texturina_300Light,
     fontSize: 16,
   },
+  imageStyle: { width: 180, height: 180 },
   label: {
     fontFamily: Caudex.Regular,
     fontSize: 14,
