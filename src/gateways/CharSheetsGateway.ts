@@ -31,7 +31,7 @@ export class CharSheetsGateway implements ICharSheetsGateway {
   loadInitialData = async (): Promise<CharSheetDto[]> => {
     const charSheets = await this.load();
     if (!charSheets) {
-      this.setList(getFactoryDefaultCharSheets(this.getUuid));
+      this.setList([]);
       await this.save();
     } else {
       this.setList(charSheets);
