@@ -1,6 +1,7 @@
 import { Container, interfaces } from 'inversify';
 
 import { Injectables } from '~config/ioc/injectables';
+import { CharSheetTemplatesStore } from '~domains/charsheet-templates/CharSheetTemplatesStore';
 import { CharSheetScreenPresenter } from '~domains/charsheets/CharSheetScreen/CharSheetScreenPresenter';
 import { CharSheetsStore } from '~domains/charsheets/CharSheetsStore';
 import { CharSheet } from '~domains/data.models';
@@ -24,6 +25,7 @@ export class BaseIOC {
     this.container.bind(RoutingService).toSelf().inSingletonScope();
     this.container.bind(AlertingService).toSelf().inSingletonScope();
     this.container.bind(CharSheetsStore).toSelf().inSingletonScope();
+    this.container.bind(CharSheetTemplatesStore).toSelf().inSingletonScope();
 
     bindFactory<CharSheetScreenPresenter, CharSheet['id']>({
       container: this.container,

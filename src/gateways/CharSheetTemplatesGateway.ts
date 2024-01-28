@@ -1,12 +1,11 @@
 import { injectable } from 'inversify';
 
-import { getStaticCharSheetTemplates } from '~config/factoryDefaults';
-import { CharSheetTemplateDto } from '~gateways/dto.models';
+import { getStaticCharSheetTemplatesDto } from '~config/factoryDefaults';
+import { CharSheetTemplate, toCharSheetTemplate } from '~domains/data.models';
 
 @injectable()
 export class CharSheetTemplatesGateway {
-  constructor() {}
-  async loadInitialData(): Promise<CharSheetTemplateDto[]> {
-    return getStaticCharSheetTemplates();
+  async loadInitialData(): Promise<CharSheetTemplate[]> {
+    return getStaticCharSheetTemplatesDto().map(toCharSheetTemplate);
   }
 }

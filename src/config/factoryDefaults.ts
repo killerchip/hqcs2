@@ -166,6 +166,6 @@ const staticCharSheetTemplates: CharSheetTemplateDto[] = [
   },
 ];
 
-export function getStaticCharSheetTemplates(): CharSheetTemplateDto[] {
+export function getStaticCharSheetTemplatesDto(): CharSheetTemplateDto[] {
   return JSON.parse(JSON.stringify(staticCharSheetTemplates));
 }
