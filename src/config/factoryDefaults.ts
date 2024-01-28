@@ -93,7 +93,7 @@ export function resetFactoryDefaults() {
 
 const staticCharSheetTemplates: CharSheetTemplateDto[] = [
   {
-    id: 'static.barbarian-male',
+    id: 'static.barbarian',
     image: 'BarbarianMale',
     name: 'Yagonan',
     class: 'Barbarian',
@@ -111,7 +111,7 @@ const staticCharSheetTemplates: CharSheetTemplateDto[] = [
     spells: null,
   },
   {
-    id: 'static.elf-female',
+    id: 'static.elf',
     image: 'ElfFemale',
     name: 'Legolily',
     class: 'Elf',
@@ -129,7 +129,7 @@ const staticCharSheetTemplates: CharSheetTemplateDto[] = [
     spells: [],
   },
   {
-    id: 'static.dwarf-male',
+    id: 'static.dwarf',
     image: 'DwarfMale',
     name: 'Thorlin',
     class: 'Dwarf',
@@ -147,7 +147,7 @@ const staticCharSheetTemplates: CharSheetTemplateDto[] = [
     spells: null,
   },
   {
-    id: 'static.wizard-male',
+    id: 'static.wizard',
     image: 'WizardMale',
     name: 'Sarumon',
     class: 'Wizard',
