@@ -1,7 +1,7 @@
 import { Stack } from 'expo-router';
 import { observer } from 'mobx-react-lite';
 import { useEffect } from 'react';
-import { FlatList, ListRenderItem } from 'react-native';
+import { FlatList, ListRenderItem, Button } from 'react-native';
 
 import { createInjectableContext } from '~config/ioc/injection.react';
 import { CharSheetsListScreenPresenter } from '~domains/charsheets/CharSheetsListScreen/CharSheetsListScreenPresenter';
@@ -29,10 +29,14 @@ function CharSheetListScreenComponent() {
   return (
     <>
       <Stack.Screen options={{ title: 'Char Sheets' }} />
-      <FlatList<CharSheetListItemVM>
-        data={presenter.charSheetList}
-        renderItem={renderItem}
-      />
+      {!presenter?.displayEmptyListCta && (
+        <FlatList<CharSheetListItemVM>
+          data={presenter.charSheetList}
+          renderItem={renderItem}
+        />
+      )}
+
+      {presenter?.displayEmptyListCta && <Button title='Creat a CharSheet' />}
     </>
   );
 }

@@ -55,4 +55,8 @@ export class CharSheetsListScreenPresenter {
       params: { id },
     });
   }
+
+  get displayEmptyListCta() {
+    return this.loading === false && this.charSheetList.length === 0;
+  }
 }
