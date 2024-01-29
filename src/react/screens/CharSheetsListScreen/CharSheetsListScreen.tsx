@@ -36,7 +36,12 @@ function CharSheetListScreenComponent() {
         />
       )}
 
-      {presenter?.displayEmptyListCta && <Button title='Creat a CharSheet' />}
+      {presenter?.displayEmptyListCta && (
+        <Button
+          title='Create a Character'
+          onPress={() => presenter.goToCharSheetTemplatesPage()}
+        />
+      )}
     </>
   );
 }

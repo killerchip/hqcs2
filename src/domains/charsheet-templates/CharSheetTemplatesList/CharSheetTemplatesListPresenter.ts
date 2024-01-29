@@ -1,4 +1,4 @@
-import { inject, injectable } from 'inversify';
+import { inject, injectable, postConstruct } from 'inversify';
 import { makeAutoObservable } from 'mobx';
 
 import { CharSheetTemplatesStore } from '~domains/charsheet-templates/CharSheetTemplatesStore';
@@ -11,6 +11,10 @@ export class CharSheetTemplatesListPresenter {
     private readonly charSheetTemplatesStore: CharSheetTemplatesStore,
   ) {
     makeAutoObservable(this);
+  }
+
+  @postConstruct() postConstruct() {
+    this.charSheetTemplatesStore.loadInitialData().then();
   }
 
   get list() {

@@ -56,6 +56,10 @@ export class CharSheetsListScreenPresenter {
     });
   }
 
+  goToCharSheetTemplatesPage() {
+    this.routingService.push(ROUTES.TEMPLATES_LIST);
+  }
+
   get displayEmptyListCta() {
     return this.loading === false && this.charSheetList.length === 0;
   }
