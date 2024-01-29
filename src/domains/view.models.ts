@@ -1,4 +1,4 @@
-import { CharSheet } from '~domains/data.models';
+import { CharSheet, CharSheetTemplate } from '~domains/data.models';
 
 export type CharSheetListItemVM = {
   id: string;
@@ -31,4 +31,20 @@ export function getCharSheetFormVM(charSheet: CharSheet): CharSheetFormVM {
   }
 
   return { ...charSheet, moveTypeString } as CharSheetFormVM;
+}
+
+export type CharSheetTemplateListItemVM = {
+  id: string;
+  class: string;
+  image?: CharSheetTemplate['image'];
+};
+
+export function getCharSheetTemplateListItemVM(
+  charSheetTemplate: CharSheetTemplate,
+): CharSheetTemplateListItemVM {
+  return {
+    id: charSheetTemplate.id,
+    class: charSheetTemplate.class,
+    image: charSheetTemplate.image,
+  };
 }
