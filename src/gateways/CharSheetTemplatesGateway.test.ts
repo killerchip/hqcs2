@@ -35,7 +35,10 @@ describe('CharSheetTemplatesGateway', () => {
 
     const charSheetTemplatesGateway = container.get(CharSheetTemplatesGateway);
     const loadedData = await charSheetTemplatesGateway.loadInitialData();
+    // loads initial data
     expect(loadedData).toStrictEqual(expectedData);
+
+    // converts DTO data to model
     expect(toCharSheetTemplateSpy).toHaveBeenCalledTimes(
       getStaticCharSheetTemplatesDto().length,
     );
